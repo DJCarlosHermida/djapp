@@ -1,0 +1,381 @@
+import React, { useState, useEffect, useRef } from 'react'
+
+const EQUALIZER_BARS = 48
+const IDLE_TIMEOUT_MS = 4000
+
+const SCROLL_THRESHOLD = 40
+
+const App: React.FC = () => {
+  const [equalizerActive, setEqualizerActive] = useState(false)
+  const [navScrolled, setNavScrolled] = useState(false)
+  const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const lastTriggerRef = useRef(0)
+  const THROTTLE_MS = 200
+
+  const startIdleOffTimer = () => {
+    if (idleTimerRef.current) clearTimeout(idleTimerRef.current)
+    idleTimerRef.current = setTimeout(() => setEqualizerActive(false), IDLE_TIMEOUT_MS)
+  }
+
+  const onActivity = (skipThrottle = false) => {
+    const now = Date.now()
+    if (!skipThrottle && now - lastTriggerRef.current < THROTTLE_MS) return
+    lastTriggerRef.current = now
+    setEqualizerActive(true)
+    startIdleOffTimer()
+  }
+
+  useEffect(() => {
+    const onScroll = () => setNavScrolled(window.scrollY > SCROLL_THRESHOLD)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  useEffect(() => {
+    const onMouseMove = () => onActivity(false)
+    const onClick = () => onActivity(true)
+    window.addEventListener('mousemove', onMouseMove)
+    window.addEventListener('click', onClick)
+    return () => {
+      window.removeEventListener('mousemove', onMouseMove)
+      window.removeEventListener('click', onClick)
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current)
+    }
+  }, [])
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const formElement = event.currentTarget
+    const formData = new FormData(formElement)
+
+    const name = formData.get('name')?.toString() ?? ''
+    const phone = formData.get('phone')?.toString() ?? ''
+    const email = formData.get('Email')?.toString() ?? ''
+    const message = formData.get('message')?.toString() ?? ''
+
+    const subject = `-Nombre ${name} -Teléfono ${phone} -Email ${email}`
+    const mailto = `mailto:djcarloshermida@outlook.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
+      message,
+    )}`
+
+    formElement.reset()
+    window.location.href = mailto
+  }
+
+  return (
+    <>
+      <nav className={`navbar navbar-expand-lg navbar-dark bg-transparent fixed-top blur-navbar navbar-with-equalizer ${equalizerActive ? 'navbar--equalizer-active' : ''} ${navScrolled ? 'navbar--scrolled' : ''}`}>
+        <div className="navbar-equalizer-bg" aria-hidden="true">
+          {Array.from({ length: EQUALIZER_BARS }, (_, i) => (
+            <span
+              key={i}
+              className="navbar-equalizer-bar"
+              style={{ animationDelay: `${(i * 0.03) % 1}s` }}
+            />
+          ))}
+        </div>
+        <div className="container navbar-equalizer-content">
+          <a className="navbar-brand fw-bold" href="#home">
+            DJ Carlos Hermida | <i style={{ color: 'orange' }}> Music &amp; Web </i>
+          </a>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul className="navbar-nav gap-2">
+              <li className="nav-item">
+                <a className="nav-link" href="#home">
+                  Home
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#remix">
+                  Remix
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#services">
+                  Servicios
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#about">
+                  Sobre mí
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#social">
+                  Redes
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="btn btn-sm btn-light ms-lg-3" href="#form">
+                  Contacto
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <header id="home" className="hero d-flex align-items-center text-white">
+        <div className="hero-overlay"></div>
+        <div className="container position-relative text-center text-md-start">
+          <div className="row align-items-center g-4">
+            <div className="col-md-7">
+              <p className="text-uppercase small mb-2 text-accent">
+                DJ para todo tipo de eventos...
+              </p>
+              <h1 className="display-3 fw-bold mb-3 hero-title">CARLOS HERMIDA</h1>
+              <p className="lead mb-4 hero-subtitle">
+                DJ y discoteca para todo tipo de eventos. Consulte por otros servicios: Catering, Fotografía, Video, Seguridad.
+              </p>
+              <div className="d-flex flex-wrap gap-3">
+                <a href="#form" className="btn btn-primary btn-lg rounded-pill px-4">
+                  Reserva tu fecha
+                </a>
+                <a href="#remix" className="btn btn-outline-light btn-lg rounded-pill px-4">
+                  Escuchar playlist
+                </a>
+              </div>
+            </div>
+            <div className="col-md-5 d-none d-md-block">
+              <div className="hero-card shadow-lg rounded-4 p-4 bg-dark bg-opacity-75">
+                <p className="mb-2 text-uppercase small text-accent">Experiencia</p>
+                <h2 className="h3 mb-3">+20 años de experiencia</h2>
+                <p className="mb-3 small">
+                  DJ y productor uruguayo especializado en fiestas de 15, casamientos, eventos empresariales y shows en
+                  vivo, combinando mezcla en tiempo real con tecnología de punta. Creación de remixes exclusivos para marcas y eventos.
+                </p>
+                <ul className="list-unstyled small mb-0">
+                  <li>· DJ para fiestas, bodas, casamientos y eventos corporativos</li>
+                  <li>· Sonido e iluminación profesional para eventos en Montevideo y todo Uruguay</li>
+                  <li>· Pantalla gigante y Piso LED</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main>
+        <section id="remix" className="py-5 bg-black text-white">
+          <div className="container">
+            <h2 className="h2 text-center mb-4">Remix · Playlist oficial</h2>
+            <div className="ratio ratio-16x9">
+              <iframe
+                title="SoundCloud DJ Carlos Hermida"
+                width="100%"
+                height="450"
+                scrolling="no"
+                frameBorder="no"
+                allow="autoplay"
+                src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1186284883&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"
+              ></iframe>
+            </div>
+          </div>
+        </section>
+
+        <section id="services" className="py-5 bg-light">
+          <div className="container">
+            <h2 className="h2 text-center mb-3">
+              Servicios de <strong>DJ y Producción Musical</strong>
+            </h2>
+            {/* <p className="text-center text-muted mb-5">
+              Opening hours: <strong>15:00 - 06:00</strong>
+            </p> */}
+            <div className="row g-4">
+              <div className="col-md-4">
+                <div className="card h-100 shadow-sm pro-card">
+                  <div className="card-body">
+                    <h3 className="h4 mb-3">DJ para fiestas y eventos</h3>
+                    <p className="mb-0">
+                      <strong>Musicalización profesional para fiestas de 15, casamientos, discotecas y eventos
+                        corporativos</strong>. Sonido PA de alta fidelidad, playlists a medida, iluminación LED para crear la pista de baile perfecta.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-4">
+                <div className="card h-100 shadow-sm pro-card">
+                  <div className="card-body">
+                    <h3 className="h4 mb-3">Producción musical y remixes</h3>
+                    <p className="mb-0">
+                      <strong>Producción de pistas originales</strong> (Cumbia, Electronica, Rap, Trap, Hip Hop, Techouse, Techengue,
+                      Reggaetón, Rock), creación de <strong>remixes exclusivos</strong>, spots publicitarios, jingles, grabación acapella y/o banda.
+                      Operador locutor de radio, mezcla y mastering. 
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-4">
+                <div className="card h-100 shadow-sm pro-card">
+                  <div className="card-body">
+                    <h3 className="h4 mb-3">Programación Web</h3>
+                    <p className="mb-0">
+                      <strong>Frontend Developer</strong> | Javascript | Astro | React | Tailwind | Vite | TypeScript |<br/>  
+                      <strong>Backend Developer</strong> | Express | Node js | Firebase | MongoDB | SQL | Doker | Nest | Testing |  
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="about" className="py-5">
+          <div className="container">
+            <div className="row align-items-center g-4">
+              <div className="col-lg-6">
+                <img
+                  src="/img/mbr-1620x1080.jpg"
+                  alt="DJ Carlos Hermida en evento"
+                  className="img-fluid rounded shadow"
+                />
+              </div>
+              <div className="col-lg-6">
+                <h2 className="h2 mb-3">Sobre DJ Carlos Hermida</h2>
+                <p className="lead mb-3">
+                  Referente de la música y el entretenimiento en Uruguay. Con más de dos décadas de trayectoria, ha construido una marca sólida que combina pasión, experiencia y versatilidad.
+                  Su carrera comenzó desde muy joven, experimentando con mezclas y formatos que iban desde el cassette hasta el vinilo, su sello distintivo.<br/> A lo largo de los años, se ha presentado en reconocidas discotecas como <i>El Deseo, D-Mode, Cocodrilo, Azul, Akiabara, El Viejo Oeste y Life</i>, y ha trabajado en importantes emisoras de radio como <i>Imagen FM, Luna FM, Visión Young FM, Radio Young, Alternativa FM y Unión FM</i>.
+                </p>
+                <p className="mb-0">
+                Actualmente, continúa activo en la producción de fiestas y eventos de todo tipo, ofreciendo un repertorio que abarca todos los géneros musicales y transmitiendo siempre su filosofía:
+                  “Sin música no hay vida.”
+
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="social" className="py-5 bg-dark text-white">
+          <div className="container text-center">
+            <h2 className="h2 mb-3">Redes Sociales</h2>
+            <p className="mb-4 text-muted">
+              Sígueme para escuchar los últimos <strong>sets en vivo, remixes exclusivos</strong> y ver cómo se viven
+              los eventos desde la cabina.
+            </p>
+            <div className="d-flex flex-wrap justify-content-center gap-3 social-logos">
+              <a href="https://www.facebook.com/djcarloshermida" title='Facebook' target="_blank" rel="noreferrer" className="btn btn-light social-logo-btn social-logo-btn--facebook" aria-label="Facebook">
+                <svg className="social-logo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                </svg>
+              </a>
+              <a href="https://instagram.com/djcarloshermida" title='Instagram' target="_blank" rel="noreferrer" className="btn btn-light social-logo-btn social-logo-btn--instagram" aria-label="Instagram">
+                <svg className="social-logo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                </svg>
+              </a>
+              <a href="https://soundcloud.com/djcarloshermida" title='SoundCloud' target="_blank" rel="noreferrer" className="btn btn-light social-logo-btn social-logo-btn--soundcloud" aria-label="SoundCloud">
+                <svg className="social-logo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M4 14h1.5v-4H4v4zm2.2 0h1.5V7h-1.5v7zm2.2 0h1.5V8h-1.5v6zm2.2 0h1.5V6h-1.5v8zm2.2 0h1.5V7h-1.5v7zm2.2 0h1.5V8h-1.5v6zm2.2 0h1.5V9h-1.5v5zm2.2 0H19V10h-1.5v4z" />
+                </svg>
+              </a>
+              <a href="https://twitter.com/djcarloshermida" title='X (Twitter)' target="_blank" rel="noreferrer" className="btn btn-light social-logo-btn social-logo-btn--x" aria-label="X (Twitter)">
+                <svg className="social-logo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
+              </a>
+              <a href="https://www.youtube.com/djcarloshermida" title='YouTube' target="_blank" rel="noreferrer" className="btn btn-light social-logo-btn social-logo-btn--youtube" aria-label="YouTube">
+                <svg className="social-logo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                </svg>
+              </a>
+              <a href="https://wa.me/59891332854" title='WhatsApp' target="_blank" rel="noreferrer" className="btn btn-light social-logo-btn social-logo-btn--whatsapp" aria-label="WhatsApp">
+                <svg className="social-logo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section id="form" className="py-5 bg-light">
+          <div className="container">
+            <div className="row g-4">
+              <div className="col-lg-6">
+                <h2 className="h2 mb-3">Solicita presupuesto para tu evento</h2>
+                <p className="mb-4">
+                  Cuéntame qué tipo de evento deseas realizar (fiesta de 15, casamiento, evento corporativo, discoteca) y prepararé una propuesta a medida con DJ, sonido, iluminación y producción audiovisual.
+                </p>
+                <form onSubmit={handleSubmit} className="row g-3">
+                  <div className="col-md-6">
+                    <label htmlFor="name" className="form-label">
+                      Nombre*
+                    </label>
+                    <input id="name" name="name" className="form-control" required />
+                  </div>
+                  <div className="col-md-6">
+                    <label htmlFor="lastname" className="form-label">
+                      Apellido
+                    </label>
+                    <input id="lastname" name="lastname" className="form-control" />
+                  </div>
+                  <div className="col-md-6">
+                    <label htmlFor="email" className="form-label">
+                      Email*
+                    </label>
+                    <input id="email" name="Email" type="email" className="form-control" required />
+                  </div>
+                  <div className="col-md-6">
+                    <label htmlFor="phone" className="form-label">
+                      Teléfono*
+                    </label>
+                    <input id="phone" name="phone" className="form-control" required />
+                  </div>
+                  <div className="col-12">
+                    <label htmlFor="message" className="form-label">
+                      Mensaje*
+                    </label>
+                    <textarea id="message" name="message" rows={4} className="form-control" required />
+                  </div>
+                  <div className="col-12">
+                    <small className="text-muted">* campos obligatorios</small>
+                  </div>
+                  <div className="col-12">
+                    <button type="submit" className="btn btn-dark">
+                      Enviar
+                    </button>
+                  </div>
+                </form>
+              </div>
+              <div className="col-lg-4">
+                <div className="ratio ratio-4x3">
+                  <iframe
+                    title="Ubicación DJ Carlos Hermida"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3273.8221505575693!2d-56.122603870672926!3d-34.86069588006259!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x959f80b74d204053%3A0x9ea5ba12099a8632!2sVeracierto%20%26%20Do%C3%B1a%20Soledad%2C%2012100%20Montevideo%2C%20Departamento%20de%20Montevideo!5e0!3m2!1ses-419!2suy!4v1651100818310!5m2!1ses-419!2suy"
+                    style={{ border: 0, borderRadius: "10px" }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  ></iframe>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer className="py-4 bg-black text-white text-center">
+        <div className="container">
+          <p className="mb-0">
+            © {new Date().getFullYear()} | <i>djcarloshermida</i> | Todos los derechos reservados®.
+          </p>
+        </div>
+      </footer>
+    </>
+  )
+}
+
+export default App
+
