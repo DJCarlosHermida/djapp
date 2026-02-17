@@ -204,11 +204,11 @@ const App: React.FC = () => {
           <div className="row align-items-center g-4">
             <div className="col-md-7">
               <p className="text-uppercase small mb-2 text-accent">
-                DJ para todo tipo de eventos...
+               DJ y Discoteca para todo tipo de eventos...
               </p>
               <h1 className="display-3 fw-bold mb-3 hero-title">CARLOS HERMIDA</h1>
               <p className="lead mb-4 hero-subtitle">
-                DJ y discoteca para todo tipo de eventos. Consulte por otros servicios: Catering, Fotografía, Video, Seguridad.
+                | Bodas | 15 Años | Despedidas | Desfiles | Amplificaciones | Infantiles | Eventos Empresariales |
               </p>
               <div className="d-flex flex-wrap gap-3">
                 <a href="#form" className="btn btn-primary btn-lg rounded-pill px-4">
@@ -256,45 +256,67 @@ const App: React.FC = () => {
           </div>
         </section>
 
-        <section id="services" className="py-5 bg-light">
+        <section id="services" className="services-section py-5">
           <div className="container">
-            <h2 className="h2 text-center mb-3">
-              Servicios de <strong>DJ y Producción Musical</strong>
+            <p className="services-label text-uppercase small mb-2">Servicios</p>
+            <h2 className="services-title h2 text-center mb-2">
+              DJ, Music & Web
             </h2>
-            {/* <p className="text-center text-muted mb-5">
-              Opening hours: <strong>15:00 - 06:00</strong>
-            </p> */}
+            <p className="services-subtitle text-center text-muted mb-5">
+              Experiencia, equipamiento y versatilidad para tu proyecto.
+            </p>
             <div className="row g-4">
               <div className="col-md-4">
-                <div className="card h-100 shadow-sm pro-card">
+                <div className="card h-100 pro-card">
+                  <div className="pro-card-accent" aria-hidden />
                   <div className="card-body">
-                    <h3 className="h4 mb-3">DJ para fiestas y eventos</h3>
-                    <p className="mb-0">
-                      <strong>Musicalización profesional para fiestas de 15, casamientos, discotecas y eventos
-                        corporativos</strong>. Sonido PA de alta fidelidad, playlists a medida, iluminación LED para crear la pista de baile perfecta.
+                    <div className="pro-card-icon" aria-hidden>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <circle cx="12" cy="12" r="3" />
+                      </svg>
+                    </div>
+                    <h3 className="h5 pro-card-title">DJ para todo tipo de fiestas y eventos</h3>
+                    <p className="pro-card-desc mb-0">
+                      Musicalización profesional para fiestas de 15, casamientos, discotecas y eventos empresariales. 
+                      Sonido PA de alta calidad iluminación y Pista LED.
                     </p>
                   </div>
                 </div>
               </div>
               <div className="col-md-4">
-                <div className="card h-100 shadow-sm pro-card">
+                <div className="card h-100 pro-card">
+                  <div className="pro-card-accent" aria-hidden />
                   <div className="card-body">
-                    <h3 className="h4 mb-3">Producción musical y remixes</h3>
-                    <p className="mb-0">
-                      <strong>Producción de pistas originales</strong> (Cumbia, Electronica, Rap, Trap, Hip Hop, Techouse, Techengue,
-                      Reggaetón, Rock), creación de <strong>remixes exclusivos</strong>, spots publicitarios, jingles, grabación acapella y/o banda.
-                      Operador locutor de radio, mezcla y mastering. 
+                    <div className="pro-card-icon" aria-hidden>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M9 18V5l12-2v13" />
+                        <circle cx="6" cy="18" r="3" />
+                        <circle cx="18" cy="16" r="3" />
+                      </svg>
+                    </div>
+                    <h3 className="h5 pro-card-title">Producción Musical y Remixes</h3>
+                    <p className="pro-card-desc mb-0">
+                      Pistas originales (Cumbia, Electrónica, Rap, Trap, Reggaetón, Rock). <br />
+                      Remix, spots y jingles. Grabación acapella y banda. <br />
+                      Mezcla y mastering.
                     </p>
                   </div>
                 </div>
               </div>
               <div className="col-md-4">
-                <div className="card h-100 shadow-sm pro-card">
+                <div className="card h-100 pro-card">
+                  <div className="pro-card-accent" aria-hidden />
                   <div className="card-body">
-                    <h3 className="h4 mb-3">Programación Web</h3>
-                    <p className="mb-0">
-                      <strong>Frontend Developer</strong> | Javascript | Astro | React | Tailwind | Vite | TypeScript |<br/>  
-                      <strong>Backend Developer</strong> | Express | Node js | Firebase | MongoDB | SQL | Doker | Nest | Testing |  
+                    <div className="pro-card-icon" aria-hidden>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="16 18 22 12 16 6" />
+                        <polyline points="8 6 2 12 8 18" />
+                      </svg>
+                    </div>
+                    <h3 className="h5 pro-card-title">Programación Web</h3>
+                    <p className="pro-card-desc mb-0">
+                      Creación de aplicaciones web, SPA y tienda online (e-commerce) a medida. <strong>Frontend:</strong> React, TypeScript, Astro, Tailwind, Vite. <strong>Backend:</strong> Node.js, Express, Nest, Firebase, MongoDB, SQL, Docker y testing.
                     </p>
                   </div>
                 </div>
@@ -316,13 +338,15 @@ const App: React.FC = () => {
               <div className="col-lg-6">
                 <h2 className="h2 mb-3">Sobre DJ Carlos Hermida</h2>
                 <p className="lead mb-3">
-                  Referente de la música y el entretenimiento en Uruguay. Con más de dos décadas de trayectoria, ha construido una marca sólida que combina pasión, experiencia y versatilidad.
-                  Su carrera comenzó desde muy joven, experimentando con mezclas y formatos que iban desde el cassette hasta el vinilo, su sello distintivo.<br/> A lo largo de los años, se ha presentado en reconocidas discotecas como <i>El Deseo, D-Mode, Cocodrilo, Azul, Akiabara, El Viejo Oeste y Life</i>, y ha trabajado en importantes emisoras de radio como <i>Imagen FM, Luna FM, Visión Young FM, Radio Young, Alternativa FM y Unión FM</i>.
+                  Apacionado por la música y la programación. Con más de dos décadas de trayectoria, 
+                  ha construido una marca sólida que combina pasión, experiencia y versatilidad. <br />
+                  Su carrera comenzó desde muy joven, experimentando con mezclas y formatos
+                   que iban desde el cassette hasta el vinilo, su sello distintivo.<br/> 
+                   A lo largo de los años, se ha presentado en reconocidas discotecas como <i>El Deseo, D-Mode, Cocodrilo, Azul, Akiabara, El Viejo Oeste y Life</i>, ha participado en importantes emisoras de radio como <i>Imagen FM, Luna FM, Visión Young FM, Radio Young, Alternativa FM y Unión FM</i>.
                 </p>
                 <p className="mb-0">
-                Actualmente, continúa activo en la producción de fiestas y eventos de todo tipo, ofreciendo un repertorio que abarca todos los géneros musicales y transmitiendo siempre su filosofía:
-                  “Sin música no hay vida.”
-
+                <i>Actualmente, continúa activo en la producción de fiestas y eventos de todo tipo, ofreciendo un repertorio que abarca todos los géneros musicales y transmitiendo siempre su filosofía:
+                  “Sin música no hay vida.”</i>
                 </p>
               </div>
             </div>
@@ -496,9 +520,15 @@ const App: React.FC = () => {
           <div className="container">
             <div className="row g-4">
               <div className="col-lg-6">
-                <h2 className="h2 mb-3">Solicita presupuesto para tu evento</h2>
+                <h2 className="h2 mb-3">Ante cualquier duda, consulta o para solicitar presupuesto</h2>
                 <p className="mb-4">
-                  Cuéntame qué tipo de evento deseas realizar (fiesta de 15, casamiento, evento corporativo, discoteca) y prepararé una propuesta a medida con DJ, sonido, iluminación y producción audiovisual.
+                  Completá el formulario y me pondré en contacto contigo.
+                </p>
+                <p className="mb-4">
+                  Cuéntame la fecha en que se realizará el evento, qué tipo de evento deseas realizar 
+                  (fiesta de 15, casamiento, desfile, infantil, graduación, despedida etc...)
+                  Lugar y cantidad de personas. <br/>
+                  De esa manera puedo preparar una propuesta a medida con DJ, sonido e iluminación. <br/>
                 </p>
                 <form onSubmit={handleSubmit} className="row g-3">
                   <div className="col-md-6">
@@ -532,7 +562,8 @@ const App: React.FC = () => {
                     <textarea id="message" name="message" rows={4} className="form-control" required />
                   </div>
                   <div className="col-12">
-                    <small className="text-muted">* campos obligatorios</small>
+                    <small className="text-muted">* campos obligatorios</small> <br/>
+                    <small className="text-muted">* para mayor seguridad, el formulario se enviará desde tu correo electrónico</small>
                   </div>
                   <div className="col-12">
                     <button type="submit" className="btn btn-dark">
@@ -561,13 +592,12 @@ const App: React.FC = () => {
       <footer className="py-4 bg-black text-white text-center">
         <div className="container">
           <p className="mb-0">
-            © {new Date().getFullYear()} | <i>djcarloshermida</i> | Todos los derechos reservados®.
+            © {new Date().getFullYear()} | <i><a href="#home">djcarloshermida</a> </i> | Todos los derechos reservados®.
           </p>
         </div>
       </footer>
     </>
   )
 }
-
 export default App
 
