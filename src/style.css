@@ -14,6 +14,210 @@ section {
   scroll-margin-top: 80px;
 }
 
+.object-fit-cover {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+/* ----- Galería ----- */
+.galeria-section {
+  background: linear-gradient(180deg, #0d0d0d 0%, #1a1a1a 50%, #0d0d0d 100%);
+  color: #fff;
+  position: relative;
+}
+
+.galeria-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(255, 159, 67, 0.06), transparent 60%);
+  pointer-events: none;
+}
+
+.galeria-label {
+  color: #ff9f43;
+  letter-spacing: 0.2em;
+  font-weight: 600;
+}
+
+.galeria-title {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.galeria-subtitle {
+  max-width: 36rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Tarjetas de evento */
+.galeria-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  color: inherit;
+}
+
+a.galeria-card:hover {
+  color: inherit;
+}
+
+.galeria-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 159, 67, 0.2);
+  border-color: rgba(255, 159, 67, 0.25);
+}
+
+.galeria-card:focus-visible {
+  outline: 2px solid #ff9f43;
+  outline-offset: 2px;
+}
+
+.galeria-card-img-wrap {
+  position: relative;
+  border-radius: 12px 12px 0 0;
+}
+
+.galeria-card-img {
+  transition: transform 0.5s ease;
+}
+
+.galeria-card:hover .galeria-card-img {
+  transform: scale(1.08);
+}
+
+.galeria-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.2) 50%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 1.25rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.galeria-card:hover .galeria-card-overlay {
+  opacity: 1;
+}
+
+.galeria-card-cta {
+  color: #ff9f43;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.galeria-card-count {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.75rem;
+}
+
+.galeria-card-body {
+  padding: 1rem 1.25rem;
+}
+
+.galeria-card-body .card-title {
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Botón volver */
+.galeria-back {
+  color: rgba(255, 255, 255, 0.8) !important;
+  font-weight: 500;
+  padding: 0;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.galeria-back:hover {
+  color: #ff9f43 !important;
+  transform: translateX(-4px);
+}
+
+/* Grid de fotos/videos del evento */
+.galeria-media-item {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.galeria-media-item:hover {
+  transform: scale(1.03);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
+  border-color: rgba(255, 159, 67, 0.15);
+}
+
+.galeria-media-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  aspect-ratio: 1;
+  transition: transform 0.4s ease;
+}
+
+.galeria-media-item:hover .galeria-media-img {
+  transform: scale(1.05);
+}
+
+.galeria-media-video {
+  display: block;
+  aspect-ratio: 16/10;
+  object-fit: cover;
+}
+
+/* Embed Instagram (highlight) — Instagram suele bloquear iframes, el botón es el fallback */
+.galeria-instagram-embed {
+  max-width: 32rem;
+}
+
+.galeria-instagram-iframe-wrap {
+  position: relative;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  min-height: 420px;
+}
+
+.galeria-instagram-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
+  border: none;
+}
+
+.galeria-instagram-btn {
+  display: inline-flex;
+  align-items: center;
+  color: #fff !important;
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888) !important;
+  border: none !important;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.galeria-instagram-btn:hover {
+  color: #fff !important;
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px rgba(225, 48, 108, 0.4);
+}
+
 main {
   background-color: #fff;
 }
