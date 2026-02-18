@@ -22,31 +22,28 @@ type Evento = {
 const EVENTOS_GALERIA: Evento[] = [
   {
     id: 'boda-martinez-2024',
-    nombre: 'Boda Martínez',
+    nombre: 'BODAS & CASAMIENTOS',
     fecha: 'Diciembre 2024',
     lugar: 'Punta del Este',
     portada: '/img/mbr-1620x1080.jpg',
     items: [
-      { id: '1', type: 'image', url: '/img/mbr-1620x1080.jpg', title: 'DJ en acción' },
-      { id: '2', type: 'image', url: 'https://picsum.photos/seed/dj1/800/600', title: 'Pista de baile' },
-      { id: '3', type: 'image', url: 'https://picsum.photos/seed/dj2/800/600', title: 'Iluminación' },
+      { id: '1', type: 'image', url: '/img/mbr-1620x1080.jpg', title: 'DJ en acción' }
     ],
   },
   {
     id: 'fiesta-15-2024',
-    nombre: 'Fiesta de 15',
+    nombre: '15 AÑOS',
     fecha: 'Noviembre 2024',
     lugar: 'Montevideo',
     portada: 'https://picsum.photos/seed/evento15/800/600',
     items: [
-      { id: '1', type: 'image', url: 'https://picsum.photos/seed/f15-1/800/600' },
-      { id: '2', type: 'image', url: 'https://picsum.photos/seed/f15-2/800/600' },
-      { id: '3', type: 'image', url: 'https://picsum.photos/seed/f15-3/800/600' },
+      { id: '1', type: 'image', url: 'https://picsum.photos/seed/f15-1/800/600' }
+      
     ],
   },
   {
     id: 'corporativo-2024',
-    nombre: 'Evento corporativo',
+    nombre: 'EVENTOS EMPRESARIALES',
     fecha: 'Octubre 2024',
     lugar: 'Montevideo',
     portada: 'https://picsum.photos/seed/corp/800/600',
@@ -56,8 +53,30 @@ const EVENTOS_GALERIA: Evento[] = [
     ],
   },
   {
+    id: 'corporativo-2024',
+    nombre: 'DESPEDIDAS',
+    fecha: 'Octubre 2024',
+    lugar: 'Montevideo',
+    portada: 'https://picsum.photos/seed/corp/800/600',
+    items: [
+      { id: '1', type: 'image', url: 'https://picsum.photos/seed/corp1/800/600' }
+
+    ],
+  },
+  {
+    id: 'corporativo-2024',
+    nombre: 'DESFILES',
+    fecha: 'Octubre 2024',
+    lugar: 'Montevideo',
+    portada: 'https://picsum.photos/seed/corp/800/600',
+    items: [
+      { id: '1', type: 'image', url: 'https://picsum.photos/seed/corp1/800/600' }
+      
+    ],
+  },
+  {
     id: 'destacada-instagram',
-    nombre: 'Destacada',
+    nombre: 'HIGHLIGHT DE INSTAGRAM',
     fecha: 'Instagram',
     portada: '/img/mbr-1620x1080.jpg',
     items: [],
@@ -474,12 +493,11 @@ const App: React.FC = () => {
           </div>
         </section>
 
-        <section id="social" className="py-5 bg-dark text-white">
+        <section id="social" className="social-section py-5 text-white">
           <div className="container text-center">
             <h2 className="h2 mb-3">Redes Sociales</h2>
             <p className="mb-4 text-muted">
-              Sígueme para escuchar los últimos <strong>sets en vivo, remixes exclusivos</strong> y ver cómo se viven
-              los eventos desde la cabina.
+              Sígueme para estar al tanto de los últimos <strong>eventos, noticias y remixes</strong>
             </p>
             <div className="d-flex flex-wrap justify-content-center gap-3 social-logos">
               <a href="https://www.facebook.com/djcarloshermida" title='Facebook' target="_blank" rel="noreferrer" className="btn btn-light social-logo-btn social-logo-btn--facebook" aria-label="Facebook">
@@ -527,8 +545,8 @@ const App: React.FC = () => {
                 <p className="mb-4">
                   Cuéntame la fecha en que se realizará el evento, qué tipo de evento deseas realizar 
                   (fiesta de 15, casamiento, desfile, infantil, graduación, despedida etc...)
-                  Lugar y cantidad de personas. <br/>
-                  De esa manera puedo preparar una propuesta a medida con DJ, sonido e iluminación. <br/>
+                  Lugar, horario y cantidad de personas. <br/>
+                 <br/>
                 </p>
                 <form onSubmit={handleSubmit} className="row g-3">
                   <div className="col-md-6">

@@ -8,11 +8,20 @@
 body {
   margin: 0;
   background-color: #000;
+  font-family: 'Candara', Candara, 'Segoe UI', Calibri, sans-serif;
 }
 
 section {
   scroll-margin-top: 80px;
 }
+
+/* Títulos en naranja: h1 más intenso, h6 más suave */
+h1 { color: #ff9f43; }
+h2 { color: #ffa852; }
+h3 { color: #ffb162; }
+h4 { color: #ffba72; }
+h5 { color: #ffc382; }
+h6 { color: #ffcca0; }
 
 .object-fit-cover {
   object-fit: cover;
@@ -224,6 +233,11 @@ main {
 
 footer {
   font-size: 0.9rem;
+  color: #ff9f43;
+}
+
+footer a {
+  color: #ff9f43;
 }
 
 html {
@@ -473,7 +487,41 @@ html {
   line-height: 1.55;
 }
 
-/* Redes: logos en blanco y negro, color de marca al hover */
+/* ----- Redes sociales ----- */
+.social-section {
+  position: relative;
+  background: linear-gradient(165deg, #0a0a0a 0%, #111 25%, #0d0d0d 50%, #0f0f0f 75%, #080808 100%);
+  overflow: hidden;
+}
+
+.social-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 100% 80% at 50% 50%, rgba(255, 159, 67, 0.08) 0%, rgba(255, 159, 67, 0.02) 40%, transparent 70%);
+  pointer-events: none;
+}
+
+.social-section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.social-section .container {
+  position: relative;
+  z-index: 1;
+}
+
+.social-section .text-muted {
+  color: rgba(255, 255, 255, 0.65) !important;
+}
+
 .social-logos {
   align-items: center;
 }
