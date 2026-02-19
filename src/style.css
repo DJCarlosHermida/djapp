@@ -313,6 +313,107 @@ a.galeria-card:hover {
   box-shadow: 0 8px 24px rgba(225, 48, 108, 0.4);
 }
 
+/* ----- Formulario de contacto ----- */
+#form {
+  background: linear-gradient(180deg, #161510 0%, #1a1815 50%, #141210 100%);
+  color: #e8e4df;
+  position: relative;
+}
+
+#form::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 50% 60% at 20% 80%, rgba(255, 159, 67, 0.06) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+#form .container {
+  position: relative;
+  z-index: 1;
+}
+
+#form h2 {
+  color: #ff9f43;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+#form p {
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.6;
+}
+
+.contact-form .form-label {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin-bottom: 0.35rem;
+}
+
+.contact-form .form-control {
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  color: #fff;
+  padding: 0.65rem 1rem;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+.contact-form .form-control::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.contact-form .form-control:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.contact-form .form-control:focus {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: #ff9f43;
+  box-shadow: 0 0 0 3px rgba(255, 159, 67, 0.2);
+  color: #fff;
+  outline: none;
+}
+
+.contact-form textarea.form-control {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.contact-form .text-muted {
+  color: rgba(255, 255, 255, 0.5) !important;
+  font-size: 0.85rem;
+}
+
+.contact-form .btn[type="submit"] {
+  background: linear-gradient(135deg, #ff9f43 0%, #e88b2e 100%);
+  border: none;
+  color: #000;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.65rem 1.75rem;
+  border-radius: 10px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.contact-form .btn[type="submit"]:hover {
+  background: linear-gradient(135deg, #ffa852 0%, #ff9f43 100%);
+  color: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(255, 159, 67, 0.35);
+}
+
+.contact-form .btn[type="submit"]:active {
+  transform: translateY(0);
+}
+
+#form .ratio iframe {
+  border-radius: 10px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
 main {
   background-color: #fff;
 }
@@ -512,6 +613,35 @@ html {
   margin-left: auto;
   margin-right: auto;
   color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Texto legible en la vista detalle del servicio (modo oscuro) */
+.services-section .text-muted {
+  color: rgba(255, 255, 255, 0.82) !important;
+}
+
+.services-section .list-unstyled.text-muted li {
+  color: rgba(255, 255, 255, 0.82) !important;
+}
+
+/* Panel detalle del servicio: transparencia sin cambiar dimensiones */
+.services-detail {
+  position: relative;
+}
+
+.services-detail::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.services-detail > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* Tarjetas de servicios con efecto pro */
@@ -732,10 +862,7 @@ a.services-portfolio-link:hover {
 [data-theme="light"] .hero.text-white .text-accent,
 [data-theme="light"] .hero.text-white .hero-title,
 [data-theme="light"] .hero.text-white .hero-subtitle,
-[data-theme="light"] .hero.text-white p,
-[data-theme="light"] .hero.text-white .hero-card .text-accent,
-[data-theme="light"] .hero.text-white .hero-card h2,
-[data-theme="light"] .hero.text-white .hero-card li {
+[data-theme="light"] .hero.text-white p {
   color: inherit;
 }
 
@@ -743,9 +870,17 @@ a.services-portfolio-link:hover {
   color: #1a1a1a;
 }
 
+/* Tarjeta Experiencia: en modo claro mantiene fondo oscuro y texto blanco */
 [data-theme="light"] .hero .hero-card {
-  background: rgba(255, 255, 255, 0.95);
-  color: #1a1a1a;
+  background: rgba(0, 0, 0, 0.78);
+  color: #fff;
+}
+
+[data-theme="light"] .hero .hero-card .text-accent,
+[data-theme="light"] .hero .hero-card h2,
+[data-theme="light"] .hero .hero-card p,
+[data-theme="light"] .hero .hero-card li {
+  color: #fff !important;
 }
 
 [data-theme="light"] .hero .btn-outline-light {
@@ -800,6 +935,10 @@ a.services-portfolio-link:hover {
 [data-theme="light"] .services-section {
   background: linear-gradient(180deg, #f0f0f0 0%, #e8e8e8 50%, #f0f0f0 100%);
   color: #1a1a1a;
+}
+
+[data-theme="light"] .services-detail::before {
+  background: rgba(0, 0, 0, 0.04);
 }
 
 [data-theme="light"] .services-subtitle {
@@ -923,4 +1062,63 @@ a.services-portfolio-link:hover {
   background-color: #c45a11 !important;
   border-color: #c45a11 !important;
   color: #fff !important;
+}
+
+/* Formulario en tema claro */
+[data-theme="light"] #form {
+  background: linear-gradient(180deg, #f0ede8 0%, #e8e4df 50%, #eae6e0 100%);
+  color: #1a1a1a;
+}
+
+[data-theme="light"] #form::before {
+  background: radial-gradient(ellipse 50% 60% at 20% 80%, rgba(196, 90, 17, 0.06) 0%, transparent 50%);
+}
+
+[data-theme="light"] #form h2 {
+  color: #c45a11;
+}
+
+[data-theme="light"] #form p {
+  color: #333;
+}
+
+[data-theme="light"] .contact-form .form-label {
+  color: #2d2d2d;
+}
+
+[data-theme="light"] .contact-form .form-control {
+  background-color: #fff;
+  border-color: rgba(0, 0, 0, 0.15);
+  color: #1a1a1a;
+}
+
+[data-theme="light"] .contact-form .form-control::placeholder {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+[data-theme="light"] .contact-form .form-control:hover {
+  border-color: rgba(0, 0, 0, 0.25);
+  background-color: #fafafa;
+}
+
+[data-theme="light"] .contact-form .form-control:focus {
+  background-color: #fff;
+  border-color: #c45a11;
+  box-shadow: 0 0 0 3px rgba(196, 90, 17, 0.2);
+  color: #1a1a1a;
+}
+
+[data-theme="light"] .contact-form .text-muted {
+  color: #555 !important;
+}
+
+[data-theme="light"] .contact-form .btn[type="submit"] {
+  background: linear-gradient(135deg, #c45a11 0%, #a84a0e 100%);
+  color: #fff;
+}
+
+[data-theme="light"] .contact-form .btn[type="submit"]:hover {
+  background: linear-gradient(135deg, #d96b1a 0%, #c45a11 100%);
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(196, 90, 17, 0.3);
 }

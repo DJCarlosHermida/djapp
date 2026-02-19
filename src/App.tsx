@@ -412,7 +412,7 @@ const App: React.FC = () => {
                 </div>
               </>
             ) : (
-              <>
+              <div className="services-detail">
                 <button
                   type="button"
                   className="galeria-back btn btn-link text-decoration-none d-inline-flex align-items-center gap-2 mb-4"
@@ -427,10 +427,6 @@ const App: React.FC = () => {
                 {servicioSeleccionado === 'dj' && (
                   <>
                     <h2 className="services-title h2 mb-3">DJ y Discoteca</h2>
-                    <p className="text-muted mb-3">
-                      Musicalización profesional para fiestas de 15, casamientos, discotecas y eventos empresariales.
-                      Sonido PA de alta calidad, iluminación y Pista LED.
-                    </p>
                     <ul className="list-unstyled text-muted mb-0">
                       <li className="mb-2">· Bodas, 15 años, despedidas, desfiles, infantiles</li>
                       <li className="mb-2">· Eventos empresariales y corporativos</li>
@@ -441,15 +437,12 @@ const App: React.FC = () => {
                 {servicioSeleccionado === 'musica' && (
                   <>
                     <h2 className="services-title h2 mb-3">Producción Musical y Remixes</h2>
-                    <p className="text-muted mb-3">
-                      Pistas originales en múltiples géneros. Remix, spots y jingles. Grabación acapella y banda. Mezcla y mastering.
-                    </p>
                     <ul className="list-unstyled text-muted mb-4">
                       <li className="mb-2">· Cumbia, Electrónica, Rap, Trap, Reggaetón, Rock</li>
                       <li className="mb-2">· Remix y jingles para marcas y eventos</li>
                       <li className="mb-2">· Grabación, mezcla y mastering</li>
-                    <p className="services-label text-uppercase small mb-2">Remix</p>
                     </ul>
+                    <p className="services-label text-uppercase small mb-2">Remix</p>
                     <div className="services-soundcloud-wrap ratio ratio-16x9 rounded-3 overflow-hidden">
                       <iframe
                         title="SoundCloud DJ Carlos Hermida - Producción y Remixes"
@@ -467,9 +460,6 @@ const App: React.FC = () => {
                   <>
                     <h2 className="services-title h2 mb-2">Programación Web</h2>
                     <p className="galeria-label text-uppercase small mb-4">Portfolio</p>
-                    <p className="text-muted mb-4">
-                      Creación de aplicaciones web, SPA y tienda online. Frontend: React, TypeScript, Astro, Tailwind, Vite. Backend: Node.js, Express, Nest, Firebase, MongoDB, SQL.
-                    </p>
                     <div className="row g-3">
                       {PORTFOLIO_LINKS.map((item) => (
                         <div key={item.nombre} className="col-12 col-md-6 col-lg-4">
@@ -499,12 +489,12 @@ const App: React.FC = () => {
                               {item.descripcion && <p className="small services-portfolio-link__desc mb-0 mt-2">{item.descripcion}</p>}
                             </div>
                           )}
-                        </div>
-                      ))}
+                    </div>
+                  ))}
                     </div>
                   </>
                 )}
-              </>
+              </div>
             )}
           </div>
         </section>
@@ -700,7 +690,7 @@ const App: React.FC = () => {
           </div>
         </section>
 
-        <section id="form" className="py-5 bg-light">
+        <section id="form" className="py-5">
           <div className="container">
             <div className="row g-4">
               <div className="col-lg-6">
@@ -714,7 +704,7 @@ const App: React.FC = () => {
                   Lugar, horario y cantidad de personas. <br />
                   <br />
                 </p>
-                <form onSubmit={handleSubmit} className="row g-3">
+                <form onSubmit={handleSubmit} className="contact-form row g-3">
                   <div className="col-md-6">
                     <label htmlFor="name" className="form-label">
                       Nombre*
