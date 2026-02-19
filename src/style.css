@@ -763,6 +763,55 @@ a.services-portfolio-link:hover {
   transform: translateY(-2px);
 }
 
+/* Miniaturas de tecnologías debajo del portfolio */
+.tech-stack__grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
+  align-items: center;
+}
+
+.tech-stack__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.6rem;
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.tech-stack__item:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 159, 67, 0.25);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.tech-stack__icon {
+  display: block;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.tech-stack__icon--fallback {
+  display: inline-flex;
+  width: 32px;
+  height: 32px;
+  line-height: 0;
+}
+
+.tech-stack__icon--fallback svg {
+  width: 100%;
+  height: 100%;
+}
+
+.tech-stack__label {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+}
+
 /* ----- Redes sociales ----- */
 .social-section {
   position: relative;
@@ -1010,6 +1059,20 @@ a.services-portfolio-link:hover {
 [data-theme="light"] a.services-portfolio-link:hover {
   border-color: rgba(196, 90, 17, 0.4) !important;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .tech-stack__item {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .tech-stack__item:hover {
+  border-color: rgba(196, 90, 17, 0.3);
+  background: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .tech-stack__label {
+  color: #1a1a1a;
 }
 
 [data-theme="light"] .galeria-section {

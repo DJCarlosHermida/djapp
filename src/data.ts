@@ -1,4 +1,4 @@
-import type { Evento, PortfolioLink } from './types'
+import type { Evento, PortfolioLink, TechItem } from './types'
 
 export const EQUALIZER_BARS = 48
 export const IDLE_TIMEOUT_MS = 4000
@@ -72,4 +72,26 @@ export const PORTFOLIO_LINKS: PortfolioLink[] = [
   { nombre: 'Cantor Criollo', url: 'https://cantorcriollo.com.uy/', descripcion: 'Tiene como intención divulgar materiales de diferentes formatos que forman parte del archivo Marcos Velásquez. Por citar algunos ejemplos: fotografías, afiches, grabaciones, textos, conciertos y letras de canciones . ' },
   { nombre: 'Estudio GP', url: 'https://estudiogp.uy/', descripcion: 'Brindamos soluciones contables personalizadas para pequeñas, medianas y grandes empresas, asegurando su éxito y crecimiento con un equipo de expertos.' },
   { nombre: 'DJ TEAM | Ecommerce', url: 'https://djcarloshermida.vercel.app/', descripcion: 'Simulador de e-commerce de productos para fiestas y eventos: catálogo, carrito y flujo de compra.' },
+]
+
+/** Tecnologías mostradas como miniaturas debajo del portfolio */
+export const TECH_STACK: TechItem[] = [
+  { name: 'HTML', slug: 'html5', color: 'E34F26' },
+  { name: 'CSS', slug: 'css', color: '1572B6' },
+  { name: 'React', slug: 'react', color: '61DAFB' },
+  { name: 'JavaScript', slug: 'javascript', color: 'F7DF1E' },
+  { name: 'TypeScript', slug: 'typescript', color: '3178C6' },
+  { name: 'Vite', slug: 'vite', color: '646CFF' },
+  { name: 'Astro', slug: 'astro', color: 'FF5D01' },
+  { name: 'Tailwind CSS', slug: 'tailwindcss', color: '06B6D4' },
+  { name: 'Sass', slug: 'sass', color: 'CC6699' },
+  { name: 'Node.js', slug: 'nodedotjs', color: '339933' },
+  { name: 'Express', slug: 'express', color: '000000' },
+  { name: 'NestJS', slug: 'nestjs', color: 'E0234E' },
+  { name: 'Firebase', slug: 'firebase', color: 'FFCA28' },
+  { name: 'MongoDB', slug: 'mongodb', color: '47A248' },
+  { name: 'SQL', slug: 'postgresql', color: '4169E1' },
+  { name: 'Vitest', slug: 'vitest', color: '6E9F18' },
+  { name: 'bcrypt', slug: 'bcrypt', color: '00A8E1', fallbackIcon: true },
+  { name: 'Docker', slug: 'docker', color: '2496ED' },
 ]
