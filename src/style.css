@@ -223,6 +223,11 @@ a.galeria-card:hover {
 .galeria-card-body .card-title {
   color: #fff;
   font-weight: 600;
+  transition: color 0.25s ease;
+}
+
+.galeria-card:hover .galeria-card-body .card-title {
+  color: #ff9f43;
 }
 
 /* Botón volver */
@@ -315,7 +320,7 @@ a.galeria-card:hover {
 
 /* ----- Formulario de contacto ----- */
 #form {
-  background: linear-gradient(180deg, #161510 0%, #1a1815 50%, #141210 100%);
+  background: linear-gradient(180deg, #161510 0%, #1a1815 40%, #131210 80%, #100f0e 100%);
   color: #e8e4df;
   position: relative;
 }
@@ -514,6 +519,31 @@ html {
   25% { transform: scaleY(0.6); }
   50% { transform: scaleY(1); opacity: 1; }
   75% { transform: scaleY(0.4); }
+}
+
+/* Bandera de Uruguay animada (navbar) */
+.uruguay-flag-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  animation: uruguay-flag-wave 3s ease-in-out infinite;
+}
+
+.uruguay-flag {
+  display: block;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  filter: drop-shadow(0 0 6px rgba(252, 209, 22, 0.15));
+}
+
+@keyframes uruguay-flag-wave {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+
+.navbar .nav-flag {
+  margin-left: 0.25rem;
+  margin-right: 0.5rem;
 }
 
 .nav-link {
@@ -736,7 +766,7 @@ a.services-portfolio-link:hover {
 /* ----- Redes sociales ----- */
 .social-section {
   position: relative;
-  background: linear-gradient(165deg, #0a0a0a 0%, #111 25%, #0d0d0d 50%, #0f0f0f 75%, #080808 100%);
+  background: linear-gradient(180deg, #100f0e 0%, #0e0d0d 25%, #0d0d0d 50%, #0a0a0a 100%);
   overflow: hidden;
 }
 
@@ -999,6 +1029,11 @@ a.services-portfolio-link:hover {
 
 [data-theme="light"] .galeria-card-body .card-title {
   color: #1a1a1a;
+  transition: color 0.25s ease;
+}
+
+[data-theme="light"] .galeria-card:hover .galeria-card-body .card-title {
+  color: #c45a11;
 }
 
 [data-theme="light"] .galeria-card-overlay {
@@ -1033,7 +1068,7 @@ a.services-portfolio-link:hover {
 }
 
 [data-theme="light"] .social-section {
-  background: linear-gradient(165deg, #e8e8e8 0%, #e0e0e0 50%, #ddd 100%);
+  background: linear-gradient(180deg, #e2dfda 0%, #e0ddda 20%, #e0e0e0 50%, #ddd 100%);
 }
 
 [data-theme="light"] .social-section .text-muted {
@@ -1066,7 +1101,7 @@ a.services-portfolio-link:hover {
 
 /* Formulario en tema claro */
 [data-theme="light"] #form {
-  background: linear-gradient(180deg, #f0ede8 0%, #e8e4df 50%, #eae6e0 100%);
+  background: linear-gradient(180deg, #f0ede8 0%, #e8e4df 50%, #e5e2dd 85%, #e2dfda 100%);
   color: #1a1a1a;
 }
 
