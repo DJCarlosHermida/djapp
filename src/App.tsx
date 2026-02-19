@@ -98,7 +98,7 @@ type PortfolioLink = { nombre: string; url: string; descripcion?: string }
  *  - Estudio GP: soluciones contables, empresas, crecimiento (tono profesional / meta description del sitio).
  *  - DJ TEAM Ecommerce: e-commerce, productos para fiestas y eventos (tono dinámico / venta). */
 const PORTFOLIO_LINKS: PortfolioLink[] = [
-  { nombre: 'Cantor Criollo', url: 'https://cantorcriollo.com.uy/', descripcion: 'Proyecto sobre canciones populares y tradicionales. El folclore como fenómeno funcional y plástico: el pueblo lo mantiene y lo recuerda. Fotos, afiches, relatos, músicas y libros.' },
+  { nombre: 'Cantor Criollo', url: 'https://cantorcriollo.com.uy/', descripcion: 'Tiene como intención divulgar materiales de diferentes formatos que forman parte del archivo Marcos Velásquez. Por citar algunos ejemplos: fotografías, afiches, grabaciones, textos, conciertos y letras de canciones . ' },
   { nombre: 'Estudio GP', url: 'https://estudiogp.uy/', descripcion: 'Brindamos soluciones contables personalizadas para pequeñas, medianas y grandes empresas, asegurando su éxito y crecimiento con un equipo de expertos.' },
   { nombre: 'DJ TEAM | Ecommerce', url: 'https://djcarloshermida.vercel.app/', descripcion: 'Simulador de e-commerce de productos para fiestas y eventos: catálogo, carrito y flujo de compra.' },
 ]
