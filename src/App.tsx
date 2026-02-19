@@ -112,6 +112,24 @@ const App: React.FC = () => {
   const lastTriggerRef = useRef(0)
   const THROTTLE_MS = 200
 
+  const THEME_KEY = 'djcarloshermida-theme'
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    try {
+      const saved = localStorage.getItem(THEME_KEY) as 'dark' | 'light' | null
+      if (saved === 'dark' || saved === 'light') return saved
+    } catch (_) {}
+    return 'dark'
+  })
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme)
+    try {
+      localStorage.setItem(THEME_KEY, theme)
+    } catch (_) {}
+  }, [theme])
+
+  const toggleTheme = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))
+
   const startIdleOffTimer = () => {
     if (idleTimerRef.current) clearTimeout(idleTimerRef.current)
     idleTimerRef.current = setTimeout(() => setEqualizerActive(false), IDLE_TIMEOUT_MS)
@@ -223,6 +241,33 @@ const App: React.FC = () => {
                 </a>
               </li>
               <li className="nav-item">
+                <button
+                  type="button"
+                  className="nav-link theme-toggle btn btn-link border-0 p-2"
+                  onClick={toggleTheme}
+                  aria-label={theme === 'dark' ? 'Activar modo claro' : 'Activar modo oscuro'}
+                  title={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}
+                >
+                  {theme === 'dark' ? (
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                      <circle cx="12" cy="12" r="5" />
+                      <line x1="12" y1="1" x2="12" y2="3" />
+                      <line x1="12" y1="21" x2="12" y2="23" />
+                      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                      <line x1="1" y1="12" x2="3" y2="12" />
+                      <line x1="21" y1="12" x2="23" y2="12" />
+                      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                    </svg>
+                  ) : (
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                    </svg>
+                  )}
+                </button>
+              </li>
+              <li className="nav-item">
                 <a className="btn btn-sm btn-light ms-lg-3" href="#form">
                   Contacto
                 </a>
@@ -256,15 +301,13 @@ const App: React.FC = () => {
             <div className="col-md-5 d-none d-md-block">
               <div className="hero-card shadow-lg rounded-4 p-4 bg-dark bg-opacity-75">
                 <p className="mb-2 text-uppercase small text-accent">Experiencia</p>
-                <h2 className="h3 mb-3">+20 años de experiencia</h2>
+                <h2 className="h3 mb-3">Más de 20 años de trayectoria</h2>
                 <p className="mb-3 small">
-                  DJ y productor uruguayo especializado en fiestas de 15, casamientos, eventos empresariales y shows en
-                  vivo, combinando mezcla en tiempo real con tecnología de punta. Creación de remixes exclusivos para marcas y eventos.
+                  DJ y Productor Uruguayo. Especializado en eventos sociales y corporativos. <br />
+                  - Bodas - 15 Años - Despedidas - Graduaciones - Infantiles - Empresariales - Desfiles - Amplificaciones . . . <br />
                 </p>
                 <ul className="list-unstyled small mb-0">
-                  <li>· DJ para fiestas, bodas, casamientos y eventos corporativos</li>
-                  <li>· Sonido e iluminación profesional para eventos en Montevideo y todo Uruguay</li>
-                  <li>· Pantalla gigante y Piso LED</li>
+                  <li>* Servicio Integral Para Fiestas: DJ, sonido e iluminación . . .</li>
                 </ul>
               </div>
             </div>
