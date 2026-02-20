@@ -25,13 +25,13 @@ const Hero: React.FC = () => (
         <div className="col-md-5 d-none d-md-block">
           <div className="hero-card shadow-lg rounded-4 p-4 bg-dark bg-opacity-75">
             <p className="mb-2 text-uppercase small text-accent">Experiencia</p>
-            <h2 className="h3 mb-3">Más de 20 años de trayectoria</h2>
+            <h2 className="h3 mb-3" style={{ color: '#ff9f43' }}>Más de 20 años de trayectoria</h2>
             <p className="mb-3 small">
               DJ y Productor Uruguayo. Especializado en eventos sociales y corporativos. <br />
               - Bodas - 15 Años - Despedidas - Graduaciones - Infantiles - Empresariales - Desfiles - Amplificaciones . . . <br />
             </p>
             <ul className="list-unstyled small mb-0">
-              <li>* Servicio Integral Para Fiestas: DJ, sonido e iluminación . . .</li>
+              <li><i style={{ color: '#ff9f43' }}>*</i> Servicio Integral Para Fiestas: DJ, sonido e iluminación . . .</li>
             </ul>
           </div>
         </div>

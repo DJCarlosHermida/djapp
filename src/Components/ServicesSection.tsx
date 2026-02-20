@@ -10,12 +10,12 @@ type ServicesSectionProps = {
 const ServicesSection = forwardRef<HTMLElement, ServicesSectionProps>(
   function ServicesSectionInner({ servicioSeleccionado, onSelectServicio }, ref) {
     return (
-  <section ref={ref} id="services" className="services-section py-5">
-    <span id="remix" aria-hidden="true" style={{ position: 'absolute', top: 0 }} />
-    <div className="container">
-      {!servicioSeleccionado ? (
+      <section ref={ref} id="services" className="services-section py-5">
+        <span id="remix" aria-hidden="true" style={{ position: 'absolute', top: 0 }} />
+        <div className="container">
+          {!servicioSeleccionado ? (
         <>
-          <h2 className="services-title h2 text-center mb-2">
+          <h2 className="services-title h2 text-center mb-2" style={{ color: 'orange' }}>
             DJ, Music & Web
           </h2>
           <p className="services-subtitle text-center text-muted mb-5">
@@ -103,7 +103,7 @@ const ServicesSection = forwardRef<HTMLElement, ServicesSectionProps>(
             </div>
           </div>
         </>
-      ) : (
+          ) : (
         <div className="services-detail">
           <button
             type="button"
@@ -209,10 +209,10 @@ const ServicesSection = forwardRef<HTMLElement, ServicesSectionProps>(
             </>
           )}
         </div>
-      )}
-    </div>
-  </section>
-    )
+          )}
+        </div>
+      </section>
+    );
   }
 )
 

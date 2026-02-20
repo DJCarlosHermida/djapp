@@ -20,7 +20,7 @@ export default function AboutSection() {
                 Su carrera comenzó desde muy joven, experimentando con mezclas y formatos
                 que iban desde el cassette hasta el vinilo, su sello distintivo.<br />
                 A lo largo de los años, se ha presentado en reconocidas discotecas como{' '}
-                <i title="Ciudad Vieja">El Deseo</i>, <i title="Santa Ana Do Livramento">D-Mode</i>,{' '}
+                <i title="Montevideo">El Deseo</i>, <i title="Sant´Ana Do Livramento">D-Mode</i>,{' '}
                 <i title="Young">Cocodrilo</i>, <i title="Young">Azul</i>, <i title="Young">Akiabara</i>,{' '}
                 <i title="Montevideo">El Viejo Oeste</i>, <i title="Young">Life</i> entre otros. <br />
                 Ha participado en importantes emisoras de radio como: <br />
