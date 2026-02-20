@@ -9,7 +9,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({ onSubmit }) => (
     <div className="container">
       <div className="row g-4">
         <div className="col-lg-6">
-          <h2 className="h2 mb-3">Dudas, consultas o presupuesto sin compromiso</h2>
+          <h2 className="h2 mb-3">Ante alguna duda, consulta o solicitud de presupuesto...</h2>
           <p className="mb-4">
             Completá el formulario y me pondré en contacto contigo.
           </p>
