@@ -18,7 +18,7 @@ const Hero: React.FC = () => (
               Reserva tu fecha
             </a>
             <a href="#remix" className="btn btn-outline-light btn-lg rounded-pill px-4">
-              Escuchar playlist
+              Ver Eventos
             </a>
           </div>
         </div>

@@ -1,5 +1,5 @@
-import React from 'react'
-import type { Evento } from '../types'
+import React, { useState, useCallback, useEffect } from 'react'
+import type { Evento, MediaItem } from '../types'
 import { EVENTOS_GALERIA } from '../data'
 
 type GaleriaSectionProps = {
@@ -7,7 +7,44 @@ type GaleriaSectionProps = {
   onSelectEvento: (ev: Evento | null) => void
 }
 
-const GaleriaSection: React.FC<GaleriaSectionProps> = ({ eventoSeleccionado, onSelectEvento }) => (
+const GaleriaSection: React.FC<GaleriaSectionProps> = ({ eventoSeleccionado, onSelectEvento }) => {
+  const [itemModal, setItemModal] = useState<MediaItem | null>(null)
+
+  const closeModal = useCallback(() => setItemModal(null), [])
+
+  const items = eventoSeleccionado?.items ?? []
+  const currentIndex = itemModal ? items.findIndex((it) => it.id === itemModal.id && it.url === itemModal.url) : -1
+  const goPrev = useCallback(() => {
+    if (currentIndex > 0) setItemModal(items[currentIndex - 1])
+  }, [items, currentIndex])
+  const goNext = useCallback(() => {
+    if (currentIndex >= 0 && currentIndex < items.length - 1) setItemModal(items[currentIndex + 1])
+  }, [items, currentIndex])
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (!itemModal) return
+      if (e.key === 'Escape') closeModal()
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault()
+        goPrev()
+      }
+      if (e.key === 'ArrowRight') {
+        e.preventDefault()
+        goNext()
+      }
+    }
+    if (itemModal) {
+      document.addEventListener('keydown', onKey)
+      document.body.style.overflow = 'hidden'
+    }
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = ''
+    }
+  }, [itemModal, closeModal, goPrev, goNext])
+
+  return (
   <section id="galeria" className="galeria-section py-5">
     <div className="container">
       {!eventoSeleccionado ? (
@@ -100,7 +137,15 @@ const GaleriaSection: React.FC<GaleriaSectionProps> = ({ eventoSeleccionado, onS
           <div className="row g-3 galeria-media-grid">
             {eventoSeleccionado.items.map((item) => (
               <div key={item.id} className="col-6 col-md-4 col-lg-3">
-                <div className="galeria-media-item rounded overflow-hidden shadow-sm">
+                <div
+                  className="galeria-media-item rounded overflow-hidden shadow-sm"
+                  style={{ cursor: 'pointer' }}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => setItemModal(item)}
+                  onKeyDown={(e) => e.key === 'Enter' && setItemModal(item)}
+                  aria-label={item.type === 'image' ? `Ver imagen: ${item.title ?? 'Foto'}` : `Ver video`}
+                >
                   {item.type === 'image' ? (
                     <img
                       src={item.url}
@@ -111,7 +156,6 @@ const GaleriaSection: React.FC<GaleriaSectionProps> = ({ eventoSeleccionado, onS
                   ) : (
                     <video
                       src={item.url}
-                      controls
                       className="galeria-media-video w-100"
                       poster={item.thumbnail}
                     />
@@ -120,10 +164,56 @@ const GaleriaSection: React.FC<GaleriaSectionProps> = ({ eventoSeleccionado, onS
               </div>
             ))}
           </div>
+
+          {itemModal && (
+            <div
+              className="galeria-modal-overlay position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center p-3"
+              style={{ zIndex: 1050, backgroundColor: 'rgba(0,0,0,0.85)' }}
+              onClick={closeModal}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Vista ampliada"
+            >
+              <button
+                type="button"
+                className="position-absolute top-0 end-0 m-3 btn btn-light btn-sm rounded-circle p-2"
+                onClick={closeModal}
+                aria-label="Cerrar"
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+              </button>
+              <div
+                className="galeria-modal-content position-relative rounded overflow-hidden shadow-lg"
+                style={{ maxWidth: '90vw', maxHeight: '90vh' }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {itemModal.type === 'image' ? (
+                  <img
+                    src={itemModal.url}
+                    alt={itemModal.title ?? ''}
+                    className="img-fluid d-block"
+                    style={{ maxHeight: '90vh', objectFit: 'contain' }}
+                  />
+                ) : (
+                  <video
+                    src={itemModal.url}
+                    controls
+                    autoPlay
+                    className="w-100"
+                    style={{ maxHeight: '90vh' }}
+                    poster={itemModal.thumbnail}
+                  />
+                )}
+              </div>
+            </div>
+          )}
         </>
       )}
     </div>
   </section>
-)
+  )
+}
 
 export default GaleriaSection

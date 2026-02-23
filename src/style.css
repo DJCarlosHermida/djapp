@@ -763,6 +763,47 @@ a.services-portfolio-link:hover {
   transform: translateY(-2px);
 }
 
+/* Cards de opciones de discoteca (mismo estilo que la sección) */
+.services-discoteca-card {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: inherit;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.services-discoteca-card:hover {
+  border-color: rgba(255, 159, 67, 0.25) !important;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.services-discoteca-card .text-muted {
+  color: rgba(255, 255, 255, 0.82) !important;
+}
+
+.services-discoteca-card .fw-bold {
+  color: rgba(255, 255, 255, 0.95) !important;
+}
+
+/* Contenedor de video en detalle de opción discoteca */
+.services-discoteca-video-wrap {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}
+
+.services-discoteca-video-fullscreen-btn {
+  background: rgba(0, 0, 0, 0.6);
+  color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.35rem 0.5rem;
+}
+
+.services-discoteca-video-fullscreen-btn:hover {
+  background: rgba(255, 159, 67, 0.85);
+  color: #fff;
+  border-color: rgba(255, 159, 67, 0.9);
+}
+
 /* Miniaturas de tecnologías debajo del portfolio */
 .tech-stack__grid {
   display: flex;
@@ -1060,6 +1101,25 @@ a.services-portfolio-link:hover {
 [data-theme="light"] a.services-portfolio-link:hover {
   border-color: rgba(196, 90, 17, 0.4) !important;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .services-discoteca-card {
+  background: #fff;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  color: #1a1a1a;
+}
+
+[data-theme="light"] .services-discoteca-card:hover {
+  border-color: rgba(196, 90, 17, 0.3) !important;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .services-discoteca-card .text-muted {
+  color: #555 !important;
+}
+
+[data-theme="light"] .services-discoteca-card .fw-bold {
+  color: #1a1a1a !important;
 }
 
 [data-theme="light"] .tech-stack__item {

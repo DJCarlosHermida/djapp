@@ -1,6 +1,39 @@
-import { forwardRef } from 'react'
+import { forwardRef, useState, useEffect, useRef } from 'react'
 import type { ServicioId } from '../types'
 import { PORTFOLIO_LINKS, TECH_STACK } from '../data'
+
+type OpcionDiscotecaId = 'basico' | 'estandar' | 'full'
+
+const OPCIONES_DISCOTECA: Array<{
+  id: OpcionDiscotecaId
+  nombre: string
+  incluye: string
+  descripcion: string
+  precio: string
+  videoUrl?: string
+}> = [
+  {
+    id: 'basico',
+    nombre: 'Servicio Básico',
+    incluye: 'DJ + Audio JBL + Iluminación Básica',
+    descripcion: 'Ideal para eventos íntimos o con presupuesto acotado. Incluye DJ con música en vivo, audio JBL profesional e iluminación básica para ambientar tu fiesta.',
+    precio: '$8.000',
+  },
+  {
+    id: 'estandar',
+    nombre: 'Servicio Estándar',
+    incluye: 'DJ + Audio JBL + Iluminación LED + Pantalla Gigante + Bola Espejos + Máquina de Humo',
+    descripcion: 'La opción más elegida. Incluye todo lo del básico más pantalla gigante, bola de espejos y máquina de humo para darle otro nivel a tu evento.',
+    precio: '$12.000',
+  },
+  {
+    id: 'full',
+    nombre: 'Servicio Full',
+    incluye: 'DJ + Audio JBL + Iluminación LED + Show Laser + Pista LED + 2 Máquinas de Humo + Bolas Espejos',
+    descripcion: 'Experiencia completa de discoteca. Todo lo del estándar más show láser, pista LED y doble máquina de humo para una fiesta inolvidable.',
+    precio: '$21.000',
+  },
+]
 
 type ServicesSectionProps = {
   servicioSeleccionado: ServicioId | null
@@ -9,6 +42,23 @@ type ServicesSectionProps = {
 
 const ServicesSection = forwardRef<HTMLElement, ServicesSectionProps>(
   function ServicesSectionInner({ servicioSeleccionado, onSelectServicio }, ref) {
+    const [opcionDiscoteca, setOpcionDiscoteca] = useState<OpcionDiscotecaId | null>(null)
+    const videoWrapperRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+      if (servicioSeleccionado !== 'dj') setOpcionDiscoteca(null)
+    }, [servicioSeleccionado])
+
+    const toggleFullscreen = () => {
+      const el = videoWrapperRef.current
+      if (!el) return
+      if (!document.fullscreenElement) {
+        el.requestFullscreen().catch(() => {})
+      } else {
+        document.exitFullscreen()
+      }
+    }
+
     return (
       <section ref={ref} id="services" className="services-section py-5">
         <span id="remix" aria-hidden="true" style={{ position: 'absolute', top: 0 }} />
@@ -118,15 +168,82 @@ const ServicesSection = forwardRef<HTMLElement, ServicesSectionProps>(
           <p className="services-label text-uppercase small mb-1">Servicio</p>
           {servicioSeleccionado === 'dj' && (
             <>
-              <h2 className="services-title h2 mb-3">DJ y Discoteca</h2>
-              <p className="text-muted mb-3">
-                Servicio integral para fiestas y eventos: musicalización profesional, sonido PA e iluminación.
-              </p>
-              <ul className="list-unstyled text-muted mb-0">
-                <li className="mb-2">· Bodas, 15 años, despedidas, desfiles, infantiles</li>
-                <li className="mb-2">· Eventos empresariales y corporativos</li>
-                <li className="mb-2">· Amplificación e iluminación profesional</li>
-              </ul>
+              {opcionDiscoteca == null ? (
+                <>
+                  <h2 className="services-title h2 mb-3">DJ y Discoteca</h2>
+                  <p className="services-label text-uppercase small mb-3">Opciones de Discoteca</p>
+                  <div className="row g-4">
+                    {OPCIONES_DISCOTECA.map((opcion) => (
+                      <div key={opcion.id} className="col-12 col-md-4">
+                        <div
+                          className="card h-100 border rounded-3 p-3 services-discoteca-card"
+                          onClick={() => setOpcionDiscoteca(opcion.id)}
+                          onKeyDown={(e) => e.key === 'Enter' && setOpcionDiscoteca(opcion.id)}
+                          role="button"
+                          tabIndex={0}
+                          aria-label={`Ver ${opcion.nombre}`}
+                        >
+                          <h3 className="h6 mb-2" style={{ color: 'orange' }}>{opcion.nombre}</h3>
+                          <p className="small text-muted mb-2">{opcion.incluye}</p>
+                          <p className="fw-bold mb-0 fs-5">{opcion.precio}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              ) : (() => {
+                const opcion = OPCIONES_DISCOTECA.find((o) => o.id === opcionDiscoteca)!
+                return (
+                  <>
+                    <button
+                      type="button"
+                      className="galeria-back btn btn-link text-decoration-none d-inline-flex align-items-center gap-2 mb-3"
+                      onClick={() => setOpcionDiscoteca(null)}
+                    >
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                      </svg>
+                      Volver a opciones
+                    </button>
+                    <h2 className="services-title h2 mb-2">{opcion.nombre}</h2>
+                    <p className="text-muted mb-3">{opcion.descripcion}</p>
+                    <p className="small text-muted mb-3">
+                      <strong>Incluye:</strong> {opcion.incluye} — {opcion.precio}
+                    </p>
+                    <div
+                      ref={videoWrapperRef}
+                      className="services-discoteca-video-wrap position-relative rounded-3 overflow-hidden bg-dark mb-0"
+                      style={{ width: '350px', maxWidth: '100%' }}
+                    >
+                      <div className="ratio ratio-16x9">
+                        {opcion.videoUrl ? (
+                          <iframe
+                            title={`Video ${opcion.nombre}`}
+                            src={opcion.videoUrl}
+                            allowFullScreen
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          />
+                        ) : (
+                          <div className="d-flex align-items-center justify-content-center text-white-50">
+                            Video próximamente
+                          </div>
+                        )}
+                      </div>
+                      <button
+                        type="button"
+                        className="btn btn-sm position-absolute bottom-0 end-0 m-2 services-discoteca-video-fullscreen-btn"
+                        onClick={toggleFullscreen}
+                        title="Pantalla completa"
+                        aria-label="Pantalla completa"
+                      >
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
+                        </svg>
+                      </button>
+                    </div>
+                  </>
+                )
+              })()}
             </>
           )}
           {servicioSeleccionado === 'musica' && (
