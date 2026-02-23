@@ -17,7 +17,7 @@ const Hero: React.FC = () => (
             <a href="#form" className="btn btn-primary btn-lg rounded-pill px-4">
               Reserva tu fecha
             </a>
-            <a href="#remix" className="btn btn-outline-light btn-lg rounded-pill px-4">
+            <a href="#galeria" className="btn btn-outline-light btn-lg rounded-pill px-4">
               Ver Eventos
             </a>
           </div>
