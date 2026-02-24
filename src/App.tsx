@@ -9,14 +9,42 @@ import {
   GaleriaSection,
   ContactSection,
 } from './Components'
-import type { Evento, ServicioId } from './types'
+import type { Evento, OpcionDiscotecaId, ServicioId } from './types'
 import { IDLE_TIMEOUT_MS, SCROLL_THRESHOLD, THROTTLE_MS } from './data'
+
+const SERVICIO_TO_SLUG: Record<ServicioId, string> = {
+  dj: 'djydiscoteca',
+  musica: 'musica',
+  web: 'web',
+}
+const SLUG_TO_SERVICIO: Record<string, ServicioId> = {
+  djydiscoteca: 'dj',
+  musica: 'musica',
+  web: 'web',
+}
+
+const OPCION_DISCOTECA_SLUGS: OpcionDiscotecaId[] = ['basico', 'estandar', 'full']
+
+function parseServicesHash(): { servicio: ServicioId | null; opcion: OpcionDiscotecaId | null } {
+  const hash = window.location.hash.slice(1)
+  if (!hash.startsWith('services/')) return { servicio: null, opcion: null }
+  const parts = hash.slice('services/'.length).split('/').filter(Boolean)
+  const slug = parts[0] || ''
+  const servicio = SLUG_TO_SERVICIO[slug] ?? null
+  let opcion: OpcionDiscotecaId | null = null
+  if (servicio === 'dj' && parts[1] && OPCION_DISCOTECA_SLUGS.includes(parts[1] as OpcionDiscotecaId)) {
+    opcion = parts[1] as OpcionDiscotecaId
+  }
+  return { servicio, opcion }
+}
 
 const App: React.FC = () => {
   const [equalizerActive, setEqualizerActive] = useState(false)
   const [navScrolled, setNavScrolled] = useState(false)
   const [eventoSeleccionado, setEventoSeleccionado] = useState<Evento | null>(null)
-  const [servicioSeleccionado, setServicioSeleccionado] = useState<ServicioId | null>(null)
+  const parsed = () => parseServicesHash()
+  const [servicioSeleccionado, setServicioSeleccionado] = useState<ServicioId | null>(() => parsed().servicio)
+  const [opcionDiscoteca, setOpcionDiscoteca] = useState<OpcionDiscotecaId | null>(() => parsed().opcion)
   const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const lastTriggerRef = useRef(0)
   const servicesContainerRef = useRef<HTMLElement | null>(null)
@@ -72,6 +100,10 @@ const App: React.FC = () => {
   }, [])
 
   useEffect(() => {
+    if (!servicioSeleccionado) setOpcionDiscoteca(null)
+  }, [servicioSeleccionado])
+
+  useEffect(() => {
     if (!servicioSeleccionado) return
     const handleClickOutside = (e: MouseEvent) => {
       if (servicesContainerRef.current && !servicesContainerRef.current.contains(e.target as Node)) {
@@ -81,6 +113,37 @@ const App: React.FC = () => {
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [servicioSeleccionado])
+
+  // Sincronizar URL #services/slug y #services/slug/hijo al seleccionar servicio u opción
+  useEffect(() => {
+    if (servicioSeleccionado) {
+      const slug = SERVICIO_TO_SLUG[servicioSeleccionado]
+      const child = servicioSeleccionado === 'dj' && opcionDiscoteca ? `/${opcionDiscoteca}` : ''
+      window.history.replaceState(null, '', `#services/${slug}${child}`)
+    } else {
+      window.history.replaceState(null, '', window.location.pathname + window.location.search + '#services')
+    }
+  }, [servicioSeleccionado, opcionDiscoteca])
+
+  // Al cargar o al cambiar el hash, abrir servicio (y opción) y hacer scroll a #services
+  useEffect(() => {
+    const applyHash = () => {
+      const { servicio, opcion } = parseServicesHash()
+      if (servicio) {
+        setServicioSeleccionado(servicio)
+        setOpcionDiscoteca(servicio === 'dj' ? opcion : null)
+        requestAnimationFrame(() => {
+          document.getElementById('services')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        })
+      } else {
+        setServicioSeleccionado(null)
+        setOpcionDiscoteca(null)
+      }
+    }
+    applyHash()
+    window.addEventListener('hashchange', applyHash)
+    return () => window.removeEventListener('hashchange', applyHash)
+  }, [])
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -113,6 +176,8 @@ const App: React.FC = () => {
           ref={servicesContainerRef}
           servicioSeleccionado={servicioSeleccionado}
           onSelectServicio={setServicioSeleccionado}
+          opcionDiscoteca={opcionDiscoteca}
+          onSelectOpcionDiscoteca={setOpcionDiscoteca}
         />
         <AboutSection />
         <GaleriaSection

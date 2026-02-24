@@ -1,7 +1,18 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { SCROLL_THRESHOLD } from '../data'
 
-const Hero: React.FC = () => (
-  <header id="home" className="hero d-flex align-items-center text-white">
+const Hero: React.FC = () => {
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > SCROLL_THRESHOLD)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  return (
+  <header id="home" className={`hero d-flex align-items-center text-white${scrolled ? ' hero--scrolled' : ''}`}>
     <div className="hero-overlay"></div>
     <div className="container position-relative text-center text-md-start">
       <div className="row align-items-center g-4">
@@ -38,6 +49,7 @@ const Hero: React.FC = () => (
       </div>
     </div>
   </header>
-)
+  )
+}
 
 export default Hero

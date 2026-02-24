@@ -26,7 +26,7 @@ const UruguayFlag: React.FC<{ className?: string; size?: number }> = ({ classNam
             x={0}
             y={i * 3}
             width={18}
-            height={3.2}
+            height={42}
             fill={i % 2 === 0 ? white : blue}
           />
         ))}

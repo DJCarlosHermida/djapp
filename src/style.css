@@ -564,6 +564,16 @@ html {
     radial-gradient(circle at top, #ff2a6d 0, #1b1b2f 40%, #000 85%);
   overflow: hidden;
   padding-top: 80px;
+  transition: background-image 0.5s ease;
+}
+
+.hero.hero--scrolled {
+  background-image:
+    url(/img/mbr-1620x1080-%20black.jpg),
+    radial-gradient(circle at top, #ff2a6d 0, #1b1b2f 40%, #000 85%);
+  background-size: cover, auto;
+  background-position: center, center;
+  background-repeat: no-repeat, repeat;
 }
 
 .hero::before {

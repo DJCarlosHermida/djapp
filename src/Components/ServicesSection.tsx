@@ -1,8 +1,6 @@
-import { forwardRef, useState, useEffect, useRef } from 'react'
-import type { ServicioId } from '../types'
+import { forwardRef, useRef } from 'react'
+import type { OpcionDiscotecaId, ServicioId } from '../types'
 import { PORTFOLIO_LINKS, TECH_STACK } from '../data'
-
-type OpcionDiscotecaId = 'basico' | 'estandar' | 'full'
 
 const OPCIONES_DISCOTECA: Array<{
   id: OpcionDiscotecaId
@@ -38,16 +36,13 @@ const OPCIONES_DISCOTECA: Array<{
 type ServicesSectionProps = {
   servicioSeleccionado: ServicioId | null
   onSelectServicio: (id: ServicioId | null) => void
+  opcionDiscoteca: OpcionDiscotecaId | null
+  onSelectOpcionDiscoteca: (id: OpcionDiscotecaId | null) => void
 }
 
 const ServicesSection = forwardRef<HTMLElement, ServicesSectionProps>(
-  function ServicesSectionInner({ servicioSeleccionado, onSelectServicio }, ref) {
-    const [opcionDiscoteca, setOpcionDiscoteca] = useState<OpcionDiscotecaId | null>(null)
+  function ServicesSectionInner({ servicioSeleccionado, onSelectServicio, opcionDiscoteca, onSelectOpcionDiscoteca }, ref) {
     const videoWrapperRef = useRef<HTMLDivElement>(null)
-
-    useEffect(() => {
-      if (servicioSeleccionado !== 'dj') setOpcionDiscoteca(null)
-    }, [servicioSeleccionado])
 
     const toggleFullscreen = () => {
       const el = videoWrapperRef.current
@@ -177,8 +172,8 @@ const ServicesSection = forwardRef<HTMLElement, ServicesSectionProps>(
                       <div key={opcion.id} className="col-12 col-md-4">
                         <div
                           className="card h-100 border rounded-3 p-3 services-discoteca-card"
-                          onClick={() => setOpcionDiscoteca(opcion.id)}
-                          onKeyDown={(e) => e.key === 'Enter' && setOpcionDiscoteca(opcion.id)}
+                          onClick={() => onSelectOpcionDiscoteca(opcion.id)}
+                          onKeyDown={(e) => e.key === 'Enter' && onSelectOpcionDiscoteca(opcion.id)}
                           role="button"
                           tabIndex={0}
                           aria-label={`Ver ${opcion.nombre}`}
@@ -198,7 +193,7 @@ const ServicesSection = forwardRef<HTMLElement, ServicesSectionProps>(
                     <button
                       type="button"
                       className="galeria-back btn btn-link text-decoration-none d-inline-flex align-items-center gap-2 mb-3"
-                      onClick={() => setOpcionDiscoteca(null)}
+                      onClick={() => onSelectOpcionDiscoteca(null)}
                     >
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                         <path d="M19 12H5M12 19l-7-7 7-7" />

@@ -19,6 +19,9 @@ export type Evento = {
 
 export type ServicioId = 'dj' | 'musica' | 'web'
 
+/** Solo aplica al servicio DJ (opciones de discoteca) */
+export type OpcionDiscotecaId = 'basico' | 'estandar' | 'full'
+
 export type PortfolioLink = {
   nombre: string
   url: string
