@@ -8,7 +8,7 @@ import {
   ServicesSection,
   GaleriaSection,
   ContactSection,
-} from './Components'
+} from './components'
 import type { Evento, OpcionDiscotecaId, ServicioId } from './types'
 import { IDLE_TIMEOUT_MS, SCROLL_THRESHOLD, THROTTLE_MS } from './data'
 
