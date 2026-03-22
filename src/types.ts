@@ -26,6 +26,8 @@ export type PortfolioLink = {
   nombre: string
   url: string
   descripcion?: string
+  /** Si se define, sustituye la vista previa automática (p. ej. `/img/portfolio/proyecto.webp`) */
+  thumbnail?: string
 }
 
 /** Tecnología para mostrar como miniatura (nombre + slug en simple-icons y color opcional) */

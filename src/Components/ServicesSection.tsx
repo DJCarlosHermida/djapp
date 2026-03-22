@@ -1,6 +1,6 @@
 import { forwardRef, useRef } from 'react'
 import type { OpcionDiscotecaId, ServicioId } from '../types'
-import { PORTFOLIO_LINKS, TECH_STACK } from '../data'
+import { PORTFOLIO_LINKS, portfolioPreviewUrl, TECH_STACK } from '../data'
 
 const OPCIONES_DISCOTECA: Array<{
   id: OpcionDiscotecaId
@@ -262,36 +262,70 @@ const ServicesSection = forwardRef<HTMLElement, ServicesSectionProps>(
               <h2 className="services-title h2 mb-2">Programación Web</h2>
               <p className="galeria-label text-uppercase small mb-4">Portfolio</p>
               <div className="row g-3">
-                {PORTFOLIO_LINKS.map((item) => (
-                  <div key={item.nombre} className="col-12 col-md-6 col-lg-4">
-                    {item.url !== '#' ? (
-                      <a
-                        href={item.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="services-portfolio-link card h-100 text-decoration-none border rounded-3 p-3"
-                      >
-                        <span className="d-flex align-items-center justify-content-between">
+                {PORTFOLIO_LINKS.map((item) => {
+                  const thumbSrc =
+                    item.thumbnail ?? (item.url !== '#' ? portfolioPreviewUrl(item.url) : null)
+                  const body = (
+                    <>
+                      {thumbSrc ? (
+                        <div className="ratio ratio-16x9 services-portfolio-thumb">
+                          <img
+                            src={thumbSrc}
+                            alt=""
+                            loading="lazy"
+                            decoding="async"
+                            className="services-portfolio-thumb__img"
+                          />
+                        </div>
+                      ) : (
+                        <div className="ratio ratio-16x9 services-portfolio-thumb services-portfolio-thumb--placeholder" aria-hidden>
+                          <div className="services-portfolio-thumb__placeholder-inner">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="services-portfolio-thumb__placeholder-icon">
+                              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                              <circle cx="8.5" cy="8.5" r="1.5" />
+                              <polyline points="21 15 16 10 5 21" />
+                            </svg>
+                          </div>
+                        </div>
+                      )}
+                      <div className="services-portfolio-link__body p-3">
+                        <span className="d-flex align-items-center justify-content-between gap-2">
                           <strong className="services-portfolio-link__title">{item.nombre}</strong>
-                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                            <polyline points="15 3 21 3 21 9" />
-                            <line x1="10" y1="14" x2="21" y2="3" />
-                          </svg>
+                          {item.url !== '#' ? (
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden className="services-portfolio-link__ext flex-shrink-0">
+                              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                              <polyline points="15 3 21 3 21 9" />
+                              <line x1="10" y1="14" x2="21" y2="3" />
+                            </svg>
+                          ) : (
+                            <span className="badge bg-secondary flex-shrink-0">Próximamente</span>
+                          )}
                         </span>
-                        {item.descripcion && <p className="small services-portfolio-link__desc mb-0 mt-2">{item.descripcion}</p>}
-                      </a>
-                    ) : (
-                      <div className="services-portfolio-link card h-100 border rounded-3 p-3 opacity-75">
-                        <span className="d-flex align-items-center justify-content-between">
-                          <strong className="services-portfolio-link__title">{item.nombre}</strong>
-                          <span className="badge bg-secondary">Próximamente</span>
-                        </span>
-                        {item.descripcion && <p className="small services-portfolio-link__desc mb-0 mt-2">{item.descripcion}</p>}
+                        {item.descripcion && (
+                          <p className="small services-portfolio-link__desc mb-0 mt-2">{item.descripcion}</p>
+                        )}
                       </div>
-                    )}
-                  </div>
-                ))}
+                    </>
+                  )
+                  return (
+                    <div key={item.nombre} className="col-12 col-md-6 col-lg-4">
+                      {item.url !== '#' ? (
+                        <a
+                          href={item.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="services-portfolio-link card h-100 text-decoration-none border rounded-3 overflow-hidden p-0"
+                        >
+                          {body}
+                        </a>
+                      ) : (
+                        <div className="services-portfolio-link card h-100 border rounded-3 overflow-hidden p-0 opacity-75">
+                          {body}
+                        </div>
+                      )}
+                    </div>
+                  )
+                })}
               </div>
               <div className="tech-stack mt-5 pt-4">
                 <p className="galeria-label text-uppercase small mb-3">Tecnologías</p>

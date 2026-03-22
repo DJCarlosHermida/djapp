@@ -773,6 +773,37 @@ a.services-portfolio-link:hover {
   transform: translateY(-2px);
 }
 
+.services-portfolio-thumb {
+  background: rgba(0, 0, 0, 0.25);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.services-portfolio-thumb__img {
+  object-fit: cover;
+}
+
+.services-portfolio-thumb--placeholder {
+  background: linear-gradient(145deg, rgba(255, 159, 67, 0.12), rgba(0, 0, 0, 0.35));
+}
+
+.services-portfolio-thumb__placeholder-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.services-portfolio-thumb__placeholder-icon {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.services-portfolio-link__ext {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+a.services-portfolio-link:hover .services-portfolio-link__ext {
+  color: rgba(255, 159, 67, 0.95);
+}
+
 /* Cards de opciones de discoteca (mismo estilo que la sección) */
 .services-discoteca-card {
   background: rgba(255, 255, 255, 0.04);
@@ -1111,6 +1142,27 @@ a.services-portfolio-link:hover {
 [data-theme="light"] a.services-portfolio-link:hover {
   border-color: rgba(196, 90, 17, 0.4) !important;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .services-portfolio-thumb {
+  background: rgba(0, 0, 0, 0.06);
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .services-portfolio-thumb--placeholder {
+  background: linear-gradient(145deg, rgba(196, 90, 17, 0.1), rgba(0, 0, 0, 0.06));
+}
+
+[data-theme="light"] .services-portfolio-thumb__placeholder-icon {
+  color: rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="light"] .services-portfolio-link__ext {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="light"] a.services-portfolio-link:hover .services-portfolio-link__ext {
+  color: #c45a11;
 }
 
 [data-theme="light"] .services-discoteca-card {

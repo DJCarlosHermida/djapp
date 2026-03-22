@@ -67,6 +67,11 @@ export const EVENTOS_GALERIA: Evento[] = [
   },
 ]
 
+/** Vista previa del sitio a partir de su URL (puedes usar `thumbnail` en cada ítem para una imagen propia). */
+export function portfolioPreviewUrl(siteUrl: string, width = 640): string {
+  return `https://s.wordpress.com/mshots/v1/${encodeURIComponent(siteUrl)}?w=${width}`
+}
+
 /** Portfolio: texto y estilo por proyecto */
 export const PORTFOLIO_LINKS: PortfolioLink[] = [
   { nombre: 'Cantor Criollo', url: 'https://cantorcriollo.com.uy/', descripcion: 'Tiene como intención divulgar materiales de diferentes formatos que forman parte del archivo Marcos Velásquez. Por citar algunos ejemplos: fotografías, afiches, grabaciones, textos, conciertos y letras de canciones . ' },
