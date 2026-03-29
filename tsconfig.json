@@ -8,11 +8,13 @@
     "skipLibCheck": true,
     "jsx": "react-jsx",
 
-    /* Bundler mode */
+    /* Bundler mode (Vite) */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
+    "isolatedModules": true,
+    "resolveJsonModule": true,
     "noEmit": true,
 
     /* Linting */
@@ -24,5 +26,5 @@
     "noUncheckedSideEffectImports": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src"]
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
 }

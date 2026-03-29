@@ -1,6 +1,6 @@
 import { forwardRef, useRef } from 'react'
 import type { OpcionDiscotecaId, ServicioId } from '../types'
-import { PORTFOLIO_LINKS, portfolioPreviewUrl, TECH_STACK } from '../data'
+import { PORTFOLIO_LINKS, portfolioPreviewUrl, TECH_STACK, youtubeEmbedSrc } from '../data'
 
 const OPCIONES_DISCOTECA: Array<{
   id: OpcionDiscotecaId
@@ -8,7 +8,8 @@ const OPCIONES_DISCOTECA: Array<{
   incluye: string
   descripcion: string
   precio: string
-  videoUrl?: string
+  /** Enlace al video en YouTube (watch, youtu.be o embed). `#` = próximamente, misma convención que el portfolio web. */
+  url: string
 }> = [
   {
     id: 'basico',
@@ -16,6 +17,7 @@ const OPCIONES_DISCOTECA: Array<{
     incluye: 'DJ + Audio JBL + Iluminación Básica',
     descripcion: 'Ideal para eventos íntimos o con presupuesto acotado. Incluye DJ con música en vivo, audio JBL profesional e iluminación básica para ambientar tu fiesta.',
     precio: '$8.000',
+    url: '#',
   },
   {
     id: 'estandar',
@@ -23,6 +25,7 @@ const OPCIONES_DISCOTECA: Array<{
     incluye: 'DJ + Audio JBL + Iluminación LED + Pantalla Gigante + Bola Espejos + Máquina de Humo',
     descripcion: 'La opción más elegida. Incluye todo lo del básico más pantalla gigante, bola de espejos y máquina de humo para darle otro nivel a tu evento.',
     precio: '$12.000',
+    url: '#',
   },
   {
     id: 'full',
@@ -30,6 +33,7 @@ const OPCIONES_DISCOTECA: Array<{
     incluye: 'DJ + Audio JBL + Iluminación LED + Show Laser + Pista LED + 2 Máquinas de Humo + Bolas Espejos',
     descripcion: 'Experiencia completa de discoteca. Todo lo del estándar más show láser, pista LED y doble máquina de humo para una fiesta inolvidable.',
     precio: '$21.000',
+    url: '#',
   },
 ]
 
@@ -188,6 +192,7 @@ const ServicesSection = forwardRef<HTMLElement, ServicesSectionProps>(
                 </>
               ) : (() => {
                 const opcion = OPCIONES_DISCOTECA.find((o) => o.id === opcionDiscoteca)!
+                const discotecaEmbedSrc = youtubeEmbedSrc(opcion.url)
                 return (
                   <>
                     <button
@@ -205,16 +210,33 @@ const ServicesSection = forwardRef<HTMLElement, ServicesSectionProps>(
                     <p className="small text-muted mb-3">
                       <strong>Incluye:</strong> {opcion.incluye} — {opcion.precio}
                     </p>
+                    {opcion.url !== '#' ? (
+                      <a
+                        href={opcion.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="services-portfolio-link d-inline-flex align-items-center gap-2 text-decoration-none mb-3"
+                      >
+                        <span className="small text-uppercase" style={{ color: 'orange' }}>
+                          Video del servicio
+                        </span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden className="services-portfolio-link__ext flex-shrink-0">
+                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                          <polyline points="15 3 21 3 21 9" />
+                          <line x1="10" y1="14" x2="21" y2="3" />
+                        </svg>
+                      </a>
+                    ) : null}
                     <div
                       ref={videoWrapperRef}
                       className="services-discoteca-video-wrap position-relative rounded-3 overflow-hidden bg-dark mb-0"
                       style={{ width: '350px', maxWidth: '100%' }}
                     >
                       <div className="ratio ratio-16x9">
-                        {opcion.videoUrl ? (
+                        {discotecaEmbedSrc ? (
                           <iframe
                             title={`Video ${opcion.nombre}`}
-                            src={opcion.videoUrl}
+                            src={discotecaEmbedSrc}
                             allowFullScreen
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                           />

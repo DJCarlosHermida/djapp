@@ -72,6 +72,19 @@ export function portfolioPreviewUrl(siteUrl: string, width = 640): string {
   return `https://s.wordpress.com/mshots/v1/${encodeURIComponent(siteUrl)}?w=${width}`
 }
 
+/** Convierte una URL de YouTube (watch, youtu.be o embed) en `src` de iframe; `null` si es `#` o no reconocida. */
+export function youtubeEmbedSrc(url: string): string | null {
+  if (!url || url === '#') return null
+  const trimmed = url.trim()
+  const embedMatch = trimmed.match(/youtube\.com\/embed\/([^?&/]+)/i)
+  if (embedMatch) return `https://www.youtube.com/embed/${embedMatch[1]}`
+  const vMatch = trimmed.match(/[?&]v=([^&]+)/)
+  if (vMatch) return `https://www.youtube.com/embed/${decodeURIComponent(vMatch[1])}`
+  const shortMatch = trimmed.match(/youtu\.be\/([^?&/]+)/i)
+  if (shortMatch) return `https://www.youtube.com/embed/${shortMatch[1]}`
+  return null
+}
+
 /** Portfolio: texto y estilo por proyecto */
 export const PORTFOLIO_LINKS: PortfolioLink[] = [
   { nombre: 'Cantor Criollo', url: 'https://cantorcriollo.com.uy/', descripcion: 'Tiene como intención divulgar materiales de diferentes formatos que forman parte del archivo Marcos Velásquez. Por citar algunos ejemplos: fotografías, afiches, grabaciones, textos, conciertos y letras de canciones . ' },
