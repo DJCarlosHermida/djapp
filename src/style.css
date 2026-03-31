@@ -742,6 +742,34 @@ html {
   color: rgba(255, 255, 255, 0.8);
   font-size: 0.95rem;
   line-height: 1.55;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+  transition:
+    max-height 0.55s ease,
+    opacity 0.4s ease,
+    margin-top 0.4s ease;
+  transition-delay: 0s;
+}
+
+.pro-card:hover .pro-card-desc,
+.pro-card:focus-within .pro-card-desc {
+  max-height: 240px;
+  opacity: 1;
+  margin-top: 0.25rem;
+  transition-delay: 2s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pro-card-desc {
+    transition: none;
+  }
+
+  .pro-card:hover .pro-card-desc,
+  .pro-card:focus-within .pro-card-desc {
+    transition-delay: 0s;
+  }
 }
 
 .services-soundcloud-wrap {
