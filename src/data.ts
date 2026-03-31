@@ -108,6 +108,12 @@ export const PORTFOLIO_LINKS: PortfolioLink[] = [
     descripcion:
       'Clásico Snake en el navegador: control con flechas, puntaje en pantalla y la mecánica que todos conocen.',
   },
+  {
+    nombre: 'Chat WebSocket',
+    url: 'https://chat-websocket-p00q.onrender.com/',
+    descripcion:
+      'Aplicación de chat en tiempo real con WebSocket: mensajes instantáneos y usuarios conectados en vivo.',
+  },
 ]
 
 /** Tecnologías mostradas como miniaturas debajo del portfolio */
