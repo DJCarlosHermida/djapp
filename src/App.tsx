@@ -43,7 +43,6 @@ const App: React.FC = () => {
   const [equalizerActive, setEqualizerActive] = useState(false)
   const [navScrolled, setNavScrolled] = useState(false)
   const [eventoSeleccionado, setEventoSeleccionado] = useState<Evento | null>(null)
-  const [contactStatus, setContactStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
   const [cotizacionServicio, setCotizacionServicio] = useState<ServicioId | null>(null)
   const [cotizacionOpcionDj, setCotizacionOpcionDj] = useState<OpcionDiscotecaId | null>(null)
   const parsed = () => parseServicesHash()
@@ -149,45 +148,53 @@ const App: React.FC = () => {
     return () => window.removeEventListener('hashchange', applyHash)
   }, [])
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const formElement = event.currentTarget
     const formData = new FormData(formElement)
 
     const name = formData.get('name')?.toString() ?? ''
+    const lastname = formData.get('lastname')?.toString() ?? ''
     const phone = formData.get('phone')?.toString() ?? ''
     const email = formData.get('Email')?.toString() ?? ''
     const message = formData.get('message')?.toString() ?? ''
-
-    const lastname = formData.get('lastname')?.toString() ?? ''
     const service = formData.get('service')?.toString() ?? ''
     const opcionDj = formData.get('opcionDj')?.toString() ?? ''
-    setContactStatus('sending')
-    try {
-      const response = await fetch('https://formsubmit.co/ajax/djcarloshermida@outlook.com', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({
-          name,
-          lastname,
-          phone,
-          email,
-          service,
-          opcionDj,
-          message,
-          _subject: `Nueva consulta web - ${name} ${lastname}`.trim(),
-          _captcha: 'false',
-        }),
-      })
-      if (!response.ok) throw new Error('No se pudo enviar el formulario')
-      formElement.reset()
-      setContactStatus('success')
-    } catch (_) {
-      setContactStatus('error')
+
+    const servicioEtiqueta: Record<string, string> = {
+      dj: 'DJ y Discoteca',
+      musica: 'Producción musical y remixes',
+      web: 'Programación web',
     }
+    const opcionDjEtiqueta: Record<string, string> = {
+      basico: 'Básico',
+      estandar: 'Estándar',
+      full: 'Full',
+    }
+
+    const lineas = [
+      `Nombre: ${name}`.trim(),
+      lastname ? `Apellido: ${lastname}` : '',
+      `Email: ${email}`,
+      `Teléfono: ${phone}`,
+      service ? `Servicio: ${servicioEtiqueta[service] ?? service}` : '',
+      opcionDj ? `Opción DJ: ${opcionDjEtiqueta[opcionDj] ?? opcionDj}` : '',
+      '',
+      'Mensaje:',
+      message,
+    ].filter(Boolean)
+
+    const body = lineas.join('\n')
+    const subject =
+      `Consulta web | ${[name, lastname].filter(Boolean).join(' ')}`.replace(/\s+/g, ' ').trim() ||
+      'Consulta web DJ Carlos Hermida'
+
+    const mailto = `mailto:djcarloshermida@outlook.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+
+    setCotizacionServicio(null)
+    setCotizacionOpcionDj(null)
+    formElement.reset()
+    window.location.href = mailto
   }
 
   const handleCotizarServicio = (payload: { servicio: ServicioId; opcionDiscoteca: OpcionDiscotecaId | null }) => {
@@ -224,7 +231,6 @@ const App: React.FC = () => {
         <TestimonialsSection />
         <ContactSection
           onSubmit={handleSubmit}
-          status={contactStatus}
           initialServicio={cotizacionServicio}
           initialOpcionDiscoteca={cotizacionOpcionDj}
         />

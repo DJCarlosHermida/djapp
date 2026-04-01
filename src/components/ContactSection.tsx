@@ -3,15 +3,13 @@ import { WHATSAPP_PHONE } from '../data'
 import type { OpcionDiscotecaId, ServicioId } from '../types'
 
 type ContactSectionProps = {
-  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void | Promise<void>
-  status: 'idle' | 'sending' | 'success' | 'error'
+  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void
   initialServicio: ServicioId | null
   initialOpcionDiscoteca: OpcionDiscotecaId | null
 }
 
 const ContactSection: React.FC<ContactSectionProps> = ({
   onSubmit,
-  status,
   initialServicio,
   initialOpcionDiscoteca,
 }) => {
@@ -22,6 +20,12 @@ const ContactSection: React.FC<ContactSectionProps> = ({
     setServicio(initialServicio ?? '')
     setOpcionDj(initialOpcionDiscoteca ?? '')
   }, [initialServicio, initialOpcionDiscoteca])
+
+  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    onSubmit(event)
+    setServicio('')
+    setOpcionDj('')
+  }
 
   return (
   <section id="form" className="py-5">
@@ -47,7 +51,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({
           >
             Consulta rapida por WhatsApp
           </a>
-          <form onSubmit={onSubmit} className="contact-form row g-3">
+          <form onSubmit={handleFormSubmit} className="contact-form row g-3">
             <div className="col-md-6">
               <label htmlFor="name" className="form-label">Nombre*</label>
               <input id="name" name="name" className="form-control" required />
@@ -107,25 +111,13 @@ const ContactSection: React.FC<ContactSectionProps> = ({
             </div>
             <div className="col-12">
               <small className="text-muted">* campos obligatorios</small> <br />
-              <small className="text-muted">* para mayor seguridad, el formulario se enviará desde tu correo electrónico</small>
+              <small className="text-muted">
+                * al enviar se abrirá tu aplicación de correo con el mensaje listo; solo tenés que confirmar el envío
+              </small>
             </div>
-            {status === 'success' && (
-              <div className="col-12">
-                <div className="alert alert-success mb-0" role="status">
-                  Mensaje enviado correctamente. Te respondere a la brevedad.
-                </div>
-              </div>
-            )}
-            {status === 'error' && (
-              <div className="col-12">
-                <div className="alert alert-danger mb-0" role="alert">
-                  Hubo un problema al enviar. Intenta nuevamente o escribime por WhatsApp.
-                </div>
-              </div>
-            )}
             <div className="col-12">
-              <button type="submit" className="btn btn-dark" disabled={status === 'sending'}>
-                {status === 'sending' ? 'Enviando...' : 'Enviar'}
+              <button type="submit" className="btn btn-dark">
+                Enviar
               </button>
             </div>
           </form>
