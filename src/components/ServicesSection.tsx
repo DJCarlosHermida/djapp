@@ -1,6 +1,6 @@
 import { forwardRef, useRef } from 'react'
 import type { OpcionDiscotecaId, ServicioId } from '../types'
-import { PORTFOLIO_LINKS, portfolioPreviewUrl, TECH_STACK, youtubeEmbedSrc } from '../data'
+import { PORTFOLIO_LINKS, portfolioPreviewUrl, TECH_STACK, WHATSAPP_PHONE, youtubeEmbedSrc } from '../data'
 
 const OPCIONES_DISCOTECA: Array<{
   id: OpcionDiscotecaId
@@ -42,10 +42,11 @@ type ServicesSectionProps = {
   onSelectServicio: (id: ServicioId | null) => void
   opcionDiscoteca: OpcionDiscotecaId | null
   onSelectOpcionDiscoteca: (id: OpcionDiscotecaId | null) => void
+  onCotizar: (payload: { servicio: ServicioId; opcionDiscoteca: OpcionDiscotecaId | null }) => void
 }
 
 const ServicesSection = forwardRef<HTMLElement, ServicesSectionProps>(
-  function ServicesSectionInner({ servicioSeleccionado, onSelectServicio, opcionDiscoteca, onSelectOpcionDiscoteca }, ref) {
+  function ServicesSectionInner({ servicioSeleccionado, onSelectServicio, opcionDiscoteca, onSelectOpcionDiscoteca, onCotizar }, ref) {
     const videoWrapperRef = useRef<HTMLDivElement>(null)
 
     const toggleFullscreen = () => {
@@ -189,10 +190,12 @@ const ServicesSection = forwardRef<HTMLElement, ServicesSectionProps>(
                       </div>
                     ))}
                   </div>
+                  
                 </>
               ) : (() => {
                 const opcion = OPCIONES_DISCOTECA.find((o) => o.id === opcionDiscoteca)!
                 const discotecaEmbedSrc = youtubeEmbedSrc(opcion.url)
+                const waText = `Hola Carlos, quiero consultar por ${opcion.nombre} (${opcion.precio}).`
                 return (
                   <>
                     <button
@@ -210,6 +213,14 @@ const ServicesSection = forwardRef<HTMLElement, ServicesSectionProps>(
                     <p className="small text-muted mb-3">
                       <strong>Incluye:</strong> {opcion.incluye} — {opcion.precio}
                     </p>
+                    <a
+                      href={`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(waText)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-success mb-3"
+                    >
+                      Consultar por WhatsApp
+                    </a>
                     {opcion.url !== '#' ? (
                       <a
                         href={opcion.url}
@@ -256,6 +267,15 @@ const ServicesSection = forwardRef<HTMLElement, ServicesSectionProps>(
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                           <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
                         </svg>
+                      </button>
+                    </div>
+                    <div className="mt-4">
+                      <button
+                        type="button"
+                        className="btn btn-warning"
+                        onClick={() => onCotizar({ servicio: 'dj', opcionDiscoteca: opcion.id })}
+                      >
+                        Cotizar este servicio
                       </button>
                     </div>
                   </>

@@ -1,10 +1,29 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { WHATSAPP_PHONE } from '../data'
+import type { OpcionDiscotecaId, ServicioId } from '../types'
 
 type ContactSectionProps = {
-  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void
+  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void | Promise<void>
+  status: 'idle' | 'sending' | 'success' | 'error'
+  initialServicio: ServicioId | null
+  initialOpcionDiscoteca: OpcionDiscotecaId | null
 }
 
-const ContactSection: React.FC<ContactSectionProps> = ({ onSubmit }) => (
+const ContactSection: React.FC<ContactSectionProps> = ({
+  onSubmit,
+  status,
+  initialServicio,
+  initialOpcionDiscoteca,
+}) => {
+  const [servicio, setServicio] = useState<ServicioId | ''>(initialServicio ?? '')
+  const [opcionDj, setOpcionDj] = useState<OpcionDiscotecaId | ''>(initialOpcionDiscoteca ?? '')
+
+  useEffect(() => {
+    setServicio(initialServicio ?? '')
+    setOpcionDj(initialOpcionDiscoteca ?? '')
+  }, [initialServicio, initialOpcionDiscoteca])
+
+  return (
   <section id="form" className="py-5">
     <div className="container">
       <div className="row g-4">
@@ -20,6 +39,14 @@ const ContactSection: React.FC<ContactSectionProps> = ({ onSubmit }) => (
             Contactame ante cualquier duda o consulta. <br />
             <br />
           </p>
+          <a
+            href={`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent('Hola Carlos, quiero consultar disponibilidad y presupuesto para un evento.')}`}
+            target="_blank"
+            rel="noreferrer"
+            className="btn btn-success mb-4"
+          >
+            Consulta rapida por WhatsApp
+          </a>
           <form onSubmit={onSubmit} className="contact-form row g-3">
             <div className="col-md-6">
               <label htmlFor="name" className="form-label">Nombre*</label>
@@ -37,6 +64,43 @@ const ContactSection: React.FC<ContactSectionProps> = ({ onSubmit }) => (
               <label htmlFor="phone" className="form-label">Teléfono*</label>
               <input id="phone" name="phone" className="form-control" required />
             </div>
+            <div className="col-md-6">
+              <label htmlFor="service" className="form-label">Servicio a cotizar*</label>
+              <select
+                id="service"
+                name="service"
+                className="form-select"
+                required
+                value={servicio}
+                onChange={(e) => {
+                  const value = e.target.value as ServicioId | ''
+                  setServicio(value)
+                  if (value !== 'dj') setOpcionDj('')
+                }}
+              >
+                <option value="" disabled>Selecciona un servicio</option>
+                <option value="dj">DJ y Discoteca</option>
+                <option value="musica">Produccion Musical y Remixes</option>
+                <option value="web">Programacion Web</option>
+              </select>
+            </div>
+            {servicio === 'dj' && (
+              <div className="col-md-6">
+                <label htmlFor="opcionDj" className="form-label">Opcion DJ</label>
+                <select
+                  id="opcionDj"
+                  name="opcionDj"
+                  className="form-select"
+                  value={opcionDj}
+                  onChange={(e) => setOpcionDj(e.target.value as OpcionDiscotecaId | '')}
+                >
+                  <option value="">Selecciona una opcion</option>
+                  <option value="basico">Basico</option>
+                  <option value="estandar">Estandar</option>
+                  <option value="full">Full</option>
+                </select>
+              </div>
+            )}
             <div className="col-12">
               <label htmlFor="message" className="form-label">Mensaje*</label>
               <textarea id="message" name="message" rows={4} className="form-control" required />
@@ -45,8 +109,24 @@ const ContactSection: React.FC<ContactSectionProps> = ({ onSubmit }) => (
               <small className="text-muted">* campos obligatorios</small> <br />
               <small className="text-muted">* para mayor seguridad, el formulario se enviará desde tu correo electrónico</small>
             </div>
+            {status === 'success' && (
+              <div className="col-12">
+                <div className="alert alert-success mb-0" role="status">
+                  Mensaje enviado correctamente. Te respondere a la brevedad.
+                </div>
+              </div>
+            )}
+            {status === 'error' && (
+              <div className="col-12">
+                <div className="alert alert-danger mb-0" role="alert">
+                  Hubo un problema al enviar. Intenta nuevamente o escribime por WhatsApp.
+                </div>
+              </div>
+            )}
             <div className="col-12">
-              <button type="submit" className="btn btn-dark">Enviar</button>
+              <button type="submit" className="btn btn-dark" disabled={status === 'sending'}>
+                {status === 'sending' ? 'Enviando...' : 'Enviar'}
+              </button>
             </div>
           </form>
         </div>
@@ -65,6 +145,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({ onSubmit }) => (
       </div>
     </div>
   </section>
-)
+  )
+}
 
 export default ContactSection

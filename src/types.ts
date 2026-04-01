@@ -4,6 +4,10 @@ export type MediaItem = {
   url: string
   thumbnail?: string
   title?: string
+  /** Ancho máximo en px del reproductor embebido en la página (ej. video de boda). */
+  lightboxMaxWidth?: number
+  /** Si es true (YouTube), al hacer clic se reproduce en la galería sin abrir modal. */
+  playInline?: boolean
 }
 
 export type Evento = {
@@ -11,6 +15,8 @@ export type Evento = {
   nombre: string
   fecha?: string
   lugar?: string
+  /** Etiqueta para filtros de galería (ej. Bodas, 15 años). */
+  categoria?: string
   portada: string
   items: MediaItem[]
   /** Si está definido, el detalle muestra un enlace a este highlight de Instagram en lugar del grid. */

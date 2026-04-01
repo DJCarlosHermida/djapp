@@ -318,6 +318,146 @@ a.galeria-card:hover {
   box-shadow: 0 8px 24px rgba(225, 48, 108, 0.4);
 }
 
+.galeria-filters {
+  position: relative;
+  z-index: 1;
+}
+
+.galeria-filter-chip {
+  border-radius: 999px;
+  padding: 0.4rem 1rem;
+  font-weight: 500;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.9);
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.galeria-filter-chip:hover {
+  background: rgba(255, 159, 67, 0.12);
+  border-color: rgba(255, 159, 67, 0.35);
+  color: #fff;
+}
+
+.galeria-filter-chip--active {
+  background: rgba(255, 159, 67, 0.22);
+  border-color: #ff9f43;
+  color: #ff9f43;
+}
+
+.galeria-card-badge {
+  display: inline-block;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #ff9f43;
+  margin-bottom: 0.35rem;
+  font-weight: 600;
+}
+
+.galeria-media-play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.95);
+  background: rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+}
+
+.galeria-media-play svg {
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
+}
+
+.galeria-modal-overlay {
+  z-index: 1050;
+  background-color: rgba(0, 0, 0, 0.92);
+  backdrop-filter: blur(6px);
+}
+
+.galeria-modal-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 1060;
+}
+
+.galeria-modal-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1060;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  opacity: 0.92;
+}
+
+.galeria-modal-nav:hover {
+  opacity: 1;
+}
+
+.galeria-modal-nav--prev {
+  left: 0.5rem;
+}
+
+.galeria-modal-nav--next {
+  right: 0.5rem;
+}
+
+.galeria-modal-toolbar {
+  position: relative;
+  z-index: 1;
+}
+
+.galeria-modal-counter {
+  width: 100%;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .galeria-modal-counter {
+    width: auto;
+    text-align: left;
+  }
+}
+
+.galeria-modal-yt-fullscreen-btn {
+  background: rgba(0, 0, 0, 0.6);
+  color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.35rem 0.5rem;
+  z-index: 2;
+}
+
+.galeria-modal-yt-fullscreen-btn:hover {
+  background: rgba(255, 159, 67, 0.85);
+  color: #fff;
+  border-color: rgba(255, 159, 67, 0.9);
+}
+
+.galeria-inline-yt-back {
+  color: rgba(255, 255, 255, 0.75) !important;
+  text-decoration: none;
+}
+
+.galeria-inline-yt-back:hover {
+  color: #ff9f43 !important;
+}
+
+[data-theme="light"] .galeria-inline-yt-back {
+  color: #555 !important;
+}
+
+[data-theme="light"] .galeria-inline-yt-back:hover {
+  color: #c45a11 !important;
+}
+
 /* ----- Formulario de contacto ----- */
 #form {
   background: linear-gradient(180deg, #161510 0%, #1a1815 40%, #131210 80%, #100f0e 100%);
@@ -667,6 +807,7 @@ html {
 /* Panel detalle del servicio: transparencia sin cambiar dimensiones */
 .services-detail {
   position: relative;
+  padding: clamp(1rem, 2.2vw, 1.75rem);
 }
 
 .services-detail::before {
@@ -682,6 +823,12 @@ html {
 .services-detail > * {
   position: relative;
   z-index: 1;
+}
+
+@media (max-width: 767.98px) {
+  .services-detail {
+    padding: 0.9rem;
+  }
 }
 
 /* Tarjetas de servicios con efecto pro */
@@ -742,34 +889,6 @@ html {
   color: rgba(255, 255, 255, 0.8);
   font-size: 0.95rem;
   line-height: 1.55;
-  overflow: hidden;
-  max-height: 0;
-  opacity: 0;
-  margin-top: 0;
-  transition:
-    max-height 0.55s ease,
-    opacity 0.4s ease,
-    margin-top 0.4s ease;
-  transition-delay: 0s;
-}
-
-.pro-card:hover .pro-card-desc,
-.pro-card:focus-within .pro-card-desc {
-  max-height: 240px;
-  opacity: 1;
-  margin-top: 0.25rem;
-  transition-delay: 2s;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .pro-card-desc {
-    transition: none;
-  }
-
-  .pro-card:hover .pro-card-desc,
-  .pro-card:focus-within .pro-card-desc {
-    transition-delay: 0s;
-  }
 }
 
 .services-soundcloud-wrap {
@@ -1281,6 +1400,28 @@ a.services-portfolio-link:hover .services-portfolio-link__ext {
   color: #555 !important;
 }
 
+[data-theme="light"] .galeria-filter-chip {
+  border-color: rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
+}
+
+[data-theme="light"] .galeria-filter-chip:hover {
+  background: rgba(196, 90, 17, 0.1);
+  border-color: rgba(196, 90, 17, 0.35);
+  color: #1a1a1a;
+}
+
+[data-theme="light"] .galeria-filter-chip--active {
+  background: rgba(196, 90, 17, 0.18);
+  border-color: #c45a11;
+  color: #a84a0e;
+}
+
+[data-theme="light"] .galeria-card-badge {
+  color: #c45a11;
+}
+
 [data-theme="light"] .social-section {
   background: linear-gradient(180deg, #e2dfda 0%, #e0ddda 20%, #e0e0e0 50%, #ddd 100%);
 }
@@ -1370,4 +1511,61 @@ a.services-portfolio-link:hover .services-portfolio-link__ext {
   background: linear-gradient(135deg, #d96b1a 0%, #c45a11 100%);
   color: #fff;
   box-shadow: 0 8px 24px rgba(196, 90, 17, 0.3);
+}
+
+.quote-section {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0));
+}
+
+.quote-summary {
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(10, 10, 10, 0.52);
+}
+
+.quote-summary__label {
+  color: #ff9f43;
+  letter-spacing: 0.08em;
+}
+
+.quote-summary__price {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 700;
+}
+
+[data-theme="light"] .quote-section {
+  background: linear-gradient(180deg, rgba(255, 159, 67, 0.16), rgba(255, 255, 255, 0));
+}
+
+[data-theme="light"] .quote-summary {
+  background: #fff;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.testimonials-section {
+  background: linear-gradient(180deg, #111 0%, #181818 100%);
+}
+
+.testimonials-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.testimonials-card__stars {
+  color: #ffb347;
+  letter-spacing: 0.06em;
+}
+
+.testimonials-title {
+  color: #ff9f43;
+}
+
+[data-theme="light"] .testimonials-section {
+  background: linear-gradient(180deg, #fff7ef 0%, #ffffff 100%);
+}
+
+[data-theme="light"] .testimonials-card {
+  background: #fff;
+  border-color: rgba(0, 0, 0, 0.08);
+  color: #1a1a1a;
 }

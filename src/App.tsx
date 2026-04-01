@@ -6,6 +6,7 @@ import {
   AboutSection,
   SocialSection,
   ServicesSection,
+  TestimonialsSection,
   GaleriaSection,
   ContactSection,
 } from './components'
@@ -42,6 +43,9 @@ const App: React.FC = () => {
   const [equalizerActive, setEqualizerActive] = useState(false)
   const [navScrolled, setNavScrolled] = useState(false)
   const [eventoSeleccionado, setEventoSeleccionado] = useState<Evento | null>(null)
+  const [contactStatus, setContactStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
+  const [cotizacionServicio, setCotizacionServicio] = useState<ServicioId | null>(null)
+  const [cotizacionOpcionDj, setCotizacionOpcionDj] = useState<OpcionDiscotecaId | null>(null)
   const parsed = () => parseServicesHash()
   const [servicioSeleccionado, setServicioSeleccionado] = useState<ServicioId | null>(() => parsed().servicio)
   const [opcionDiscoteca, setOpcionDiscoteca] = useState<OpcionDiscotecaId | null>(() => parsed().opcion)
@@ -145,7 +149,7 @@ const App: React.FC = () => {
     return () => window.removeEventListener('hashchange', applyHash)
   }, [])
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const formElement = event.currentTarget
     const formData = new FormData(formElement)
@@ -155,11 +159,43 @@ const App: React.FC = () => {
     const email = formData.get('Email')?.toString() ?? ''
     const message = formData.get('message')?.toString() ?? ''
 
-    const subject = `-Nombre ${name} -Teléfono ${phone} -Email ${email}`
-    const mailto = `mailto:djcarloshermida@outlook.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`
+    const lastname = formData.get('lastname')?.toString() ?? ''
+    const service = formData.get('service')?.toString() ?? ''
+    const opcionDj = formData.get('opcionDj')?.toString() ?? ''
+    setContactStatus('sending')
+    try {
+      const response = await fetch('https://formsubmit.co/ajax/djcarloshermida@outlook.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          lastname,
+          phone,
+          email,
+          service,
+          opcionDj,
+          message,
+          _subject: `Nueva consulta web - ${name} ${lastname}`.trim(),
+          _captcha: 'false',
+        }),
+      })
+      if (!response.ok) throw new Error('No se pudo enviar el formulario')
+      formElement.reset()
+      setContactStatus('success')
+    } catch (_) {
+      setContactStatus('error')
+    }
+  }
 
-    formElement.reset()
-    window.location.href = mailto
+  const handleCotizarServicio = (payload: { servicio: ServicioId; opcionDiscoteca: OpcionDiscotecaId | null }) => {
+    setCotizacionServicio(payload.servicio)
+    setCotizacionOpcionDj(payload.opcionDiscoteca)
+    requestAnimationFrame(() => {
+      document.getElementById('form')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    })
   }
 
   return (
@@ -172,19 +208,26 @@ const App: React.FC = () => {
       />
       <Hero />
       <main>
+        <AboutSection />
         <ServicesSection
           ref={servicesContainerRef}
           servicioSeleccionado={servicioSeleccionado}
           onSelectServicio={setServicioSeleccionado}
           opcionDiscoteca={opcionDiscoteca}
           onSelectOpcionDiscoteca={setOpcionDiscoteca}
+          onCotizar={handleCotizarServicio}
         />
-        <AboutSection />
         <GaleriaSection
           eventoSeleccionado={eventoSeleccionado}
           onSelectEvento={setEventoSeleccionado}
         />
-        <ContactSection onSubmit={handleSubmit} />
+        <TestimonialsSection />
+        <ContactSection
+          onSubmit={handleSubmit}
+          status={contactStatus}
+          initialServicio={cotizacionServicio}
+          initialOpcionDiscoteca={cotizacionOpcionDj}
+        />
         <SocialSection />
       </main>
       <Footer />

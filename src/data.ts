@@ -4,21 +4,31 @@ export const EQUALIZER_BARS = 48
 export const IDLE_TIMEOUT_MS = 4000
 export const SCROLL_THRESHOLD = 40
 export const THROTTLE_MS = 200
+export const WHATSAPP_PHONE = '59891332854'
 
 export const EVENTOS_GALERIA: Evento[] = [
   {
     id: 'boda-martinez-2024',
     nombre: 'BODAS & CASAMIENTOS',
+    categoria: 'Bodas',
     fecha: 'Diciembre 2024',
     lugar: 'Punta del Este',
-    portada: '/img/mbr-1620x1080.jpg',
+    portada: '',
     items: [
-      { id: '1', type: 'image', url: '/img/mbr-1620x1080.jpg', title: 'DJ en acción' }
+      {
+        id: '1',
+        type: 'video',
+        url: 'https://youtu.be/wXe6WHC6Ai0',
+        title: 'DJ en acción',
+        lightboxMaxWidth: 300,
+        playInline: true,
+      },
     ],
   },
   {
     id: 'fiesta-15-2024',
     nombre: '15 AÑOS',
+    categoria: '15 años',
     fecha: 'Noviembre 2024',
     lugar: 'Montevideo',
     portada: 'https://picsum.photos/seed/evento15/800/600',
@@ -29,6 +39,7 @@ export const EVENTOS_GALERIA: Evento[] = [
   {
     id: 'corporativo-2024',
     nombre: 'EVENTOS EMPRESARIALES',
+    categoria: 'Empresarial',
     fecha: 'Octubre 2024',
     lugar: 'Montevideo',
     portada: 'https://picsum.photos/seed/corp/800/600',
@@ -40,6 +51,7 @@ export const EVENTOS_GALERIA: Evento[] = [
   {
     id: 'despedidas-2024',
     nombre: 'DESPEDIDAS',
+    categoria: 'Despedidas',
     fecha: 'Octubre 2024',
     lugar: 'Montevideo',
     portada: 'https://picsum.photos/seed/corp/800/600',
@@ -50,6 +62,7 @@ export const EVENTOS_GALERIA: Evento[] = [
   {
     id: 'desfiles-2024',
     nombre: 'DESFILES',
+    categoria: 'Desfiles',
     fecha: 'Octubre 2024',
     lugar: 'Montevideo',
     portada: 'https://picsum.photos/seed/corp/800/600',
@@ -60,6 +73,7 @@ export const EVENTOS_GALERIA: Evento[] = [
   {
     id: 'destacada-instagram',
     nombre: 'HIGHLIGHT DE INSTAGRAM',
+    categoria: 'Instagram',
     fecha: 'Instagram',
     portada: '/img/mbr-1620x1080.jpg',
     items: [],
@@ -83,6 +97,31 @@ export function youtubeEmbedSrc(url: string): string | null {
   const shortMatch = trimmed.match(/youtu\.be\/([^?&/]+)/i)
   if (shortMatch) return `https://www.youtube.com/embed/${shortMatch[1]}`
   return null
+}
+
+/** ID de video YouTube a partir de URL; `null` si no aplica. */
+export function youtubeVideoIdFromUrl(url: string): string | null {
+  const embed = youtubeEmbedSrc(url)
+  if (!embed) return null
+  const m = embed.match(/embed\/([^?/]+)/)
+  return m ? m[1] : null
+}
+
+/** Miniatura YouTube para usar como poster o portada. */
+export function youtubeThumbUrl(url: string): string | null {
+  const id = youtubeVideoIdFromUrl(url)
+  return id ? `https://i.ytimg.com/vi/${id}/hqdefault.jpg` : null
+}
+
+/** Portada visible del evento: propia, miniatura del primer YouTube o imagen por defecto. */
+export function eventoPortadaUrl(ev: Evento): string {
+  if (ev.portada) return ev.portada
+  const firstVideo = ev.items.find((i) => i.type === 'video')
+  if (firstVideo) {
+    const thumb = youtubeThumbUrl(firstVideo.url)
+    if (thumb) return thumb
+  }
+  return '/img/mbr-1620x1080.jpg'
 }
 
 /** Portfolio: texto y estilo por proyecto */
@@ -136,4 +175,39 @@ export const TECH_STACK: TechItem[] = [
   { name: 'Docker', slug: 'docker', color: '2496ED' },
   { name: 'bcrypt', slug: 'bcrypt', color: '00A8E1', fallbackIcon: true },
   { name: 'Vitest', slug: 'vitest', color: '6E9F18' },
+]
+
+export type TestimonioItem = {
+  id: string
+  nombre: string
+  tipoEvento: string
+  texto: string
+  rating: 1 | 2 | 3 | 4 | 5
+}
+
+export const TESTIMONIOS: TestimonioItem[] = [
+  {
+    id: 'testimonio-1',
+    nombre: 'Valentina y Martin',
+    tipoEvento: 'Boda',
+    texto:
+      'Carlos hizo que la fiesta no parara en toda la noche. Sonido impecable, gran lectura del publico y trato super profesional.',
+    rating: 5,
+  },
+  {
+    id: 'testimonio-2',
+    nombre: 'Familia Rodriguez',
+    tipoEvento: 'Fiesta de 15',
+    texto:
+      'Contratamos el servicio estandar y fue excelente. Puntualidad, iluminacion de calidad y musica perfecta para cada momento.',
+    rating: 5,
+  },
+  {
+    id: 'testimonio-3',
+    nombre: 'Empresa Delta',
+    tipoEvento: 'Evento empresarial',
+    texto:
+      'Muy recomendable para eventos corporativos: audio claro, coordinacion ordenada y una propuesta musical adaptable al perfil del evento.',
+    rating: 5,
+  },
 ]
