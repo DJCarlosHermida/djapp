@@ -148,43 +148,67 @@ const GaleriaSection: React.FC<GaleriaSectionProps> = ({ eventoSeleccionado, onS
 
   return (
     <section id="galeria" className="galeria-section py-5">
-      <div className="container">
+      <div className="container galeria-section__content">
         {!eventoSeleccionado ? (
           <>
-            <h2 className="galeria-title h2 text-center mb-2">Galería de eventos</h2>
-            <p className="galeria-subtitle text-center text-muted mb-4">
-              Filtrá por tipo de evento y abrí cada álbum. Compartí fotos y videos desde la vista ampliada.
-            </p>
+            <header className="galeria-header text-center mx-auto">
+              <h2 className="galeria-title h2 mb-3">Galería de eventos</h2>
+              <div className="galeria-header__rule mx-auto" aria-hidden />
+              {/* <p className="galeria-subtitle text-muted mb-2">
+                Filtrá por tipo de evento y abrí cada álbum. Compartí fotos y videos desde la vista ampliada.
+              </p> */}
+              <p className="galeria-header__count small text-muted mb-0">
+                {eventosFiltrados.length === 0
+                  ? 'Sin álbumes en este filtro'
+                  : `${eventosFiltrados.length} ${eventosFiltrados.length === 1 ? 'álbum' : 'álbumes'}`}
+              </p>
+            </header>
 
-            <div className="galeria-filters d-flex flex-wrap justify-content-center gap-2 mb-4" role="toolbar" aria-label="Filtrar galería">
-              <button
-                type="button"
-                className={`galeria-filter-chip btn btn-sm ${filtroCategoria === 'todos' ? 'galeria-filter-chip--active' : ''}`}
-                onClick={() => setFiltroCategoria('todos')}
-              >
-                Todos
-              </button>
-              {categorias.map((cat) => (
+            <div
+              className="galeria-filter-bar mx-auto d-flex flex-wrap justify-content-center"
+              role="toolbar"
+              aria-label="Filtrar galería por categoría"
+            >
+              <div className="galeria-filters d-flex flex-wrap justify-content-center gap-2">
                 <button
-                  key={cat}
                   type="button"
-                  className={`galeria-filter-chip btn btn-sm ${filtroCategoria === cat ? 'galeria-filter-chip--active' : ''}`}
-                  onClick={() => setFiltroCategoria(cat)}
+                  className={`galeria-filter-chip btn btn-sm ${filtroCategoria === 'todos' ? 'galeria-filter-chip--active' : ''}`}
+                  onClick={() => setFiltroCategoria('todos')}
+                  aria-pressed={filtroCategoria === 'todos'}
                 >
-                  {cat}
+                  Todos
                 </button>
-              ))}
+                {categorias.map((cat) => (
+                  <button
+                    key={cat}
+                    type="button"
+                    className={`galeria-filter-chip btn btn-sm ${filtroCategoria === cat ? 'galeria-filter-chip--active' : ''}`}
+                    onClick={() => setFiltroCategoria(cat)}
+                    aria-pressed={filtroCategoria === cat}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
             </div>
 
             {eventosFiltrados.length === 0 ? (
-              <p className="text-center text-muted mb-0">No hay eventos en esta categoría.</p>
+              <div className="galeria-empty text-center mx-auto">
+                <p className="galeria-empty__title mb-1">No hay eventos en esta categoría</p>
+                <p className="galeria-empty__hint small text-muted mb-0">Probá con otro filtro o volvé a «Todos».</p>
+              </div>
             ) : (
-              <div className="row g-4 galeria-grid">
-                {eventosFiltrados.map((ev) => {
+              <div key={filtroCategoria} className="row g-4 galeria-grid galeria-grid--events">
+                {eventosFiltrados.map((ev, index) => {
                   const portada = eventoPortadaUrl(ev)
                   const label = etiquetaContenido(ev)
+                  const stagger = Math.min(index, 16)
                   return (
-                    <div key={ev.id} className="col-md-6 col-lg-4">
+                    <div
+                      key={ev.id}
+                      className="col-md-6 col-lg-4 galeria-grid__cell"
+                      style={{ '--galeria-stagger': stagger } as React.CSSProperties}
+                    >
                       {ev.instagramHighlightUrl ? (
                         <a
                           href={ev.instagramHighlightUrl}
@@ -257,7 +281,7 @@ const GaleriaSection: React.FC<GaleriaSectionProps> = ({ eventoSeleccionado, onS
           <>
             <button
               type="button"
-              className="galeria-back btn btn-link text-decoration-none d-inline-flex align-items-center gap-2 mb-4"
+              className="galeria-back btn btn-link text-decoration-none d-inline-flex align-items-center gap-2 mb-3"
               onClick={() => onSelectEvento(null)}
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -265,11 +289,26 @@ const GaleriaSection: React.FC<GaleriaSectionProps> = ({ eventoSeleccionado, onS
               </svg>
               Volver a galería
             </button>
-            <p className="galeria-label text-uppercase small mb-1">{eventoSeleccionado.fecha ?? 'Evento'}</p>
-            <h2 className="galeria-title h2 mb-2">{eventoSeleccionado.nombre}</h2>
-            {eventoSeleccionado.lugar && (
-              <p className="text-muted mb-4">{eventoSeleccionado.lugar}</p>
-            )}
+            <header className="galeria-event-header">
+              <div className="d-flex flex-column flex-md-row flex-md-wrap align-items-start justify-content-between gap-3 gap-md-4">
+                <div className="galeria-event-header__titles">
+                  <p className="galeria-label text-uppercase small mb-2">{eventoSeleccionado.fecha ?? 'Evento'}</p>
+                  <h2 className="galeria-title h2 mb-0">{eventoSeleccionado.nombre}</h2>
+                  {eventoSeleccionado.lugar && (
+                    <p className="galeria-event-header__place text-muted mb-0 mt-2">{eventoSeleccionado.lugar}</p>
+                  )}
+                </div>
+                <div className="galeria-event-meta d-flex flex-wrap gap-2 align-items-center">
+                  {eventoSeleccionado.categoria && (
+                    <span className="galeria-event-pill">{eventoSeleccionado.categoria}</span>
+                  )}
+                  <span className="galeria-event-pill galeria-event-pill--muted">
+                    {eventoSeleccionado.items.length}{' '}
+                    {eventoSeleccionado.items.length === 1 ? 'ítem' : 'ítems'}
+                  </span>
+                </div>
+              </div>
+            </header>
             <div className="row g-3 galeria-media-grid">
               {eventoSeleccionado.items.map((item) => {
                 const ytThumb = item.type === 'video' ? youtubeThumbUrl(item.url) : null
@@ -337,9 +376,11 @@ const GaleriaSection: React.FC<GaleriaSectionProps> = ({ eventoSeleccionado, onS
                               loading="lazy"
                             />
                             <span className="galeria-media-play" aria-hidden>
-                              <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M8 5v14l11-7z" />
-                              </svg>
+                              <span className="galeria-media-play__ring">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                                  <path d="M8 5v14l11-7z" />
+                                </svg>
+                              </span>
                             </span>
                           </div>
                         )}
@@ -378,9 +419,11 @@ const GaleriaSection: React.FC<GaleriaSectionProps> = ({ eventoSeleccionado, onS
                             loading="lazy"
                           />
                           <span className="galeria-media-play" aria-hidden>
-                            <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
-                              <path d="M8 5v14l11-7z" />
-                            </svg>
+                            <span className="galeria-media-play__ring">
+                              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M8 5v14l11-7z" />
+                              </svg>
+                            </span>
                           </span>
                         </>
                       ) : (
@@ -454,23 +497,29 @@ const GaleriaSection: React.FC<GaleriaSectionProps> = ({ eventoSeleccionado, onS
                   style={{ maxWidth: 'min(96vw, 1200px)', width: '100%' }}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div className="galeria-modal-toolbar d-flex flex-wrap align-items-center justify-content-center gap-2 w-100 mb-2">
-                    {items.length > 1 && currentIndex >= 0 && (
-                      <span className="galeria-modal-counter small text-white-50 me-md-2">
-                        {currentIndex + 1} / {items.length}
-                      </span>
-                    )}
-                    <button type="button" className="btn btn-sm btn-outline-light" onClick={compartir}>
-                      Compartir enlace
-                    </button>
-                    <button type="button" className="btn btn-sm btn-outline-light" onClick={copiarEnlace}>
-                      Copiar enlace
-                    </button>
-                    {copiado && <span className="small text-success">Copiado</span>}
+                  <div className="galeria-modal-toolbar w-100 mb-3">
+                    <div className="galeria-modal-bar d-flex flex-wrap align-items-center justify-content-center gap-2 py-2 px-3">
+                      {items.length > 1 && currentIndex >= 0 && (
+                        <span className="galeria-modal-counter small text-white-50 me-md-1">
+                          {currentIndex + 1} / {items.length}
+                        </span>
+                      )}
+                      <button type="button" className="btn btn-sm galeria-modal-action" onClick={compartir}>
+                        Compartir
+                      </button>
+                      <button type="button" className="btn btn-sm galeria-modal-action" onClick={copiarEnlace}>
+                        Copiar enlace
+                      </button>
+                      {copiado && (
+                        <span className="galeria-modal-toast small" role="status">
+                          Copiado
+                        </span>
+                      )}
+                    </div>
                   </div>
 
                   <div
-                    className="galeria-modal-content position-relative rounded overflow-hidden shadow-lg w-100"
+                    className="galeria-modal-content position-relative rounded-3 overflow-hidden w-100"
                     style={{ maxHeight: 'min(78vh, 900px)' }}
                   >
                     {itemModal.type === 'image' ? (
