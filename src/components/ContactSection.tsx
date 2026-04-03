@@ -32,15 +32,14 @@ const ContactSection: React.FC<ContactSectionProps> = ({
     <div className="container">
       <div className="row g-4">
         <div className="col-lg-6">
-          <h2 className="h2 mb-3">Ante alguna duda, consulta o solicitud de presupuesto...</h2>
+          <h2 className="h2 mb-3">Ante cualquier duda, consulta o solicitud...</h2>
           <p className="mb-4">
             Completá el formulario y me pondré en contacto contigo.
           </p>
           <p className="mb-4">
             Cuéntame la fecha en que se realizará el evento, qué tipo de evento deseas realizar
             (fiesta de 15, casamiento, desfile, infantil, graduación, despedida etc...)
-            Lugar, horario y cantidad de personas. De esa manera podemos ajustar el presupuesto a tus necesidades. <br />
-            Contactame ante cualquier duda o consulta. <br />
+            Lugar, horario y cantidad de personas. De esa manera podré asesorarte ajustando el presupuesto a tus necesidades. <br />
             <br />
           </p>
           <a
@@ -112,7 +111,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({
             <div className="col-12">
               <small className="text-muted">* campos obligatorios</small> <br />
               <small className="text-muted">
-                * al enviar se abrirá tu aplicación de correo con el mensaje listo; solo tenés que confirmar el envío
+                ** Para mayor seguridad el formulario cargará automaticamente los datos ingresados a tu aplicación de correo, solo tenés que confirmar el envío
               </small>
             </div>
             <div className="col-12">

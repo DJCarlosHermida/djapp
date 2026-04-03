@@ -6,7 +6,7 @@ import {
   AboutSection,
   SocialSection,
   ServicesSection,
-  TestimonialsSection,
+  ResenasSection,
   GaleriaSection,
   ContactSection,
 } from './components'
@@ -228,7 +228,7 @@ const App: React.FC = () => {
           eventoSeleccionado={eventoSeleccionado}
           onSelectEvento={setEventoSeleccionado}
         />
-        <TestimonialsSection />
+        <ResenasSection />
         <ContactSection
           onSubmit={handleSubmit}
           initialServicio={cotizacionServicio}

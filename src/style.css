@@ -1541,30 +1541,30 @@ a.services-portfolio-link:hover .services-portfolio-link__ext {
   border-color: rgba(0, 0, 0, 0.1);
 }
 
-.testimonials-section {
+.resenas-section {
   background: linear-gradient(180deg, #111 0%, #181818 100%);
 }
 
-.testimonials-card {
+.resenas-card {
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: #fff;
 }
 
-.testimonials-card__stars {
+.resenas-card__stars {
   color: #ffb347;
   letter-spacing: 0.06em;
 }
 
-.testimonials-title {
+.resenas-title {
   color: #ff9f43;
 }
 
-[data-theme="light"] .testimonials-section {
+[data-theme="light"] .resenas-section {
   background: linear-gradient(180deg, #fff7ef 0%, #ffffff 100%);
 }
 
-[data-theme="light"] .testimonials-card {
+[data-theme="light"] .resenas-card {
   background: #fff;
   border-color: rgba(0, 0, 0, 0.08);
   color: #1a1a1a;
