@@ -12,32 +12,15 @@ import {
 } from './components'
 import type { Evento, OpcionDiscotecaId, ServicioId } from './types'
 import { IDLE_TIMEOUT_MS, SCROLL_THRESHOLD, THROTTLE_MS } from './data'
-
-const SERVICIO_TO_SLUG: Record<ServicioId, string> = {
-  dj: 'djydiscoteca',
-  musica: 'musica',
-  web: 'web',
-}
-const SLUG_TO_SERVICIO: Record<string, ServicioId> = {
-  djydiscoteca: 'dj',
-  musica: 'musica',
-  web: 'web',
-}
-
-const OPCION_DISCOTECA_SLUGS: OpcionDiscotecaId[] = ['basico', 'estandar', 'full']
-
-function parseServicesHash(): { servicio: ServicioId | null; opcion: OpcionDiscotecaId | null } {
-  const hash = window.location.hash.slice(1)
-  if (!hash.startsWith('services/')) return { servicio: null, opcion: null }
-  const parts = hash.slice('services/'.length).split('/').filter(Boolean)
-  const slug = parts[0] || ''
-  const servicio = SLUG_TO_SERVICIO[slug] ?? null
-  let opcion: OpcionDiscotecaId | null = null
-  if (servicio === 'dj' && parts[1] && OPCION_DISCOTECA_SLUGS.includes(parts[1] as OpcionDiscotecaId)) {
-    opcion = parts[1] as OpcionDiscotecaId
-  }
-  return { servicio, opcion }
-}
+import {
+  SERVICIO_TO_SLUG,
+  parseAppHash,
+  guardHashOrRedirect,
+  getScrollSpySection,
+  replaceHash,
+  scrollToHashTarget,
+} from './hashNavigation'
+import type { ParsedAppHash } from './hashNavigation'
 
 const App: React.FC = () => {
   const [equalizerActive, setEqualizerActive] = useState(false)
@@ -45,12 +28,19 @@ const App: React.FC = () => {
   const [eventoSeleccionado, setEventoSeleccionado] = useState<Evento | null>(null)
   const [cotizacionServicio, setCotizacionServicio] = useState<ServicioId | null>(null)
   const [cotizacionOpcionDj, setCotizacionOpcionDj] = useState<OpcionDiscotecaId | null>(null)
-  const parsed = () => parseServicesHash()
-  const [servicioSeleccionado, setServicioSeleccionado] = useState<ServicioId | null>(() => parsed().servicio)
-  const [opcionDiscoteca, setOpcionDiscoteca] = useState<OpcionDiscotecaId | null>(() => parsed().opcion)
+
+  const initialServices = (() => {
+    const p = parseAppHash(window.location.hash)
+    if (p.kind === 'services') return { servicio: p.servicio, opcion: p.opcion }
+    return { servicio: null as ServicioId | null, opcion: null as OpcionDiscotecaId | null }
+  })()
+
+  const [servicioSeleccionado, setServicioSeleccionado] = useState<ServicioId | null>(initialServices.servicio)
+  const [opcionDiscoteca, setOpcionDiscoteca] = useState<OpcionDiscotecaId | null>(initialServices.opcion)
   const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const lastTriggerRef = useRef(0)
   const servicesContainerRef = useRef<HTMLElement | null>(null)
+  const prevServicioRef = useRef<ServicioId | null>(initialServices.servicio)
 
   const THEME_KEY = 'djcarloshermida-theme'
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
@@ -117,36 +107,83 @@ const App: React.FC = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [servicioSeleccionado])
 
-  // Sincronizar URL #services/slug y #services/slug/hijo al seleccionar servicio u opción
-  useEffect(() => {
-    if (servicioSeleccionado) {
-      const slug = SERVICIO_TO_SLUG[servicioSeleccionado]
-      const child = servicioSeleccionado === 'dj' && opcionDiscoteca ? `/${opcionDiscoteca}` : ''
-      window.history.replaceState(null, '', `#services/${slug}${child}`)
-    } else {
-      window.history.replaceState(null, '', window.location.pathname + window.location.search + '#services')
-    }
-  }, [servicioSeleccionado, opcionDiscoteca])
-
-  // Al cargar o al cambiar el hash, abrir servicio (y opción) y hacer scroll a #services
-  useEffect(() => {
-    const applyHash = () => {
-      const { servicio, opcion } = parseServicesHash()
-      if (servicio) {
-        setServicioSeleccionado(servicio)
-        setOpcionDiscoteca(servicio === 'dj' ? opcion : null)
-        requestAnimationFrame(() => {
-          document.getElementById('services')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        })
-      } else {
+  const applyParsedHash = (parsed: ParsedAppHash) => {
+    switch (parsed.kind) {
+      case 'section':
         setServicioSeleccionado(null)
         setOpcionDiscoteca(null)
-      }
+        requestAnimationFrame(() => scrollToHashTarget(parsed.id, 'auto'))
+        break
+      case 'anchor':
+        setServicioSeleccionado(null)
+        setOpcionDiscoteca(null)
+        requestAnimationFrame(() => scrollToHashTarget(parsed.id, 'auto'))
+        break
+      case 'services-root':
+        setServicioSeleccionado(null)
+        setOpcionDiscoteca(null)
+        requestAnimationFrame(() => scrollToHashTarget('services', 'auto'))
+        break
+      case 'services':
+        setServicioSeleccionado(parsed.servicio)
+        setOpcionDiscoteca(parsed.servicio === 'dj' ? parsed.opcion : null)
+        requestAnimationFrame(() => scrollToHashTarget('services', 'auto'))
+        break
+      case 'empty':
+        setServicioSeleccionado(null)
+        setOpcionDiscoteca(null)
+        break
+      default:
+        break
     }
-    applyHash()
-    window.addEventListener('hashchange', applyHash)
-    return () => window.removeEventListener('hashchange', applyHash)
+  }
+
+  useEffect(() => {
+    const parsed = guardHashOrRedirect()
+    applyParsedHash(parsed)
+    const onHashChange = () => {
+      const p = guardHashOrRedirect()
+      applyParsedHash(p)
+    }
+    window.addEventListener('hashchange', onHashChange)
+    return () => window.removeEventListener('hashchange', onHashChange)
   }, [])
+
+  useEffect(() => {
+    if (!servicioSeleccionado) return
+    const slug = SERVICIO_TO_SLUG[servicioSeleccionado]
+    const child = servicioSeleccionado === 'dj' && opcionDiscoteca ? `/${opcionDiscoteca}` : ''
+    replaceHash(`services/${slug}${child}`)
+  }, [servicioSeleccionado, opcionDiscoteca])
+
+  useEffect(() => {
+    const prev = prevServicioRef.current
+    prevServicioRef.current = servicioSeleccionado
+    if (prev !== null && servicioSeleccionado === null) {
+      replaceHash(getScrollSpySection())
+    }
+  }, [servicioSeleccionado])
+
+  useEffect(() => {
+    if (servicioSeleccionado) return undefined
+
+    let raf = 0
+    const onScroll = () => {
+      cancelAnimationFrame(raf)
+      raf = requestAnimationFrame(() => {
+        replaceHash(getScrollSpySection())
+      })
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    requestAnimationFrame(() => {
+      requestAnimationFrame(onScroll)
+    })
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener('scroll', onScroll)
+    }
+  }, [servicioSeleccionado])
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
