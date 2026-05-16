@@ -25,10 +25,16 @@ function isInlineYoutubeItem(item: MediaItem): boolean {
 const GaleriaSection: React.FC<GaleriaSectionProps> = ({ eventoSeleccionado, onSelectEvento }) => {
   const [itemModal, setItemModal] = useState<MediaItem | null>(null)
   const [filtroCategoria, setFiltroCategoria] = useState<string>('todos')
-  const [copiado, setCopiado] = useState(false)
+  const [feedbackToast, setFeedbackToast] = useState<{ message: string; tone: 'success' | 'error' } | null>(null)
   const [inlineYoutubePlayingId, setInlineYoutubePlayingId] = useState<string | null>(null)
+  const [imagenesConError, setImagenesConError] = useState<Set<string>>(new Set())
   const lightboxYoutubeWrapRef = useRef<HTMLDivElement>(null)
   const inlinePlayerWrapRef = useRef<HTMLDivElement>(null)
+  const modalOverlayRef = useRef<HTMLDivElement>(null)
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
+  const lastFocusedElementRef = useRef<HTMLElement | null>(null)
+  const touchStartXRef = useRef<number | null>(null)
+  const feedbackTimerRef = useRef<number | null>(null)
 
   const categorias = useMemo(() => {
     const set = new Set<string>()
@@ -47,7 +53,12 @@ const GaleriaSection: React.FC<GaleriaSectionProps> = ({ eventoSeleccionado, onS
     setInlineYoutubePlayingId(null)
   }, [eventoSeleccionado?.id])
 
-  const closeModal = useCallback(() => setItemModal(null), [])
+  const closeModal = useCallback(() => {
+    setItemModal(null)
+    window.setTimeout(() => {
+      lastFocusedElementRef.current?.focus()
+    }, 0)
+  }, [])
 
   const items = eventoSeleccionado?.items ?? []
   const currentIndex = itemModal ? items.findIndex((it) => it.id === itemModal.id && it.url === itemModal.url) : -1
@@ -79,14 +90,32 @@ const GaleriaSection: React.FC<GaleriaSectionProps> = ({ eventoSeleccionado, onS
   const shareUrl = itemModal?.url ?? ''
   const modalYoutubeEmbed = itemModal ? youtubeEmbedSrc(itemModal.url) : null
 
+  const setFeedback = useCallback((message: string, tone: 'success' | 'error') => {
+    if (feedbackTimerRef.current) {
+      window.clearTimeout(feedbackTimerRef.current)
+    }
+    setFeedbackToast({ message, tone })
+    feedbackTimerRef.current = window.setTimeout(() => setFeedbackToast(null), 2200)
+  }, [])
+
+  const marcarImagenError = useCallback((imageKey: string) => {
+    setImagenesConError((prev) => {
+      if (prev.has(imageKey)) return prev
+      const next = new Set(prev)
+      next.add(imageKey)
+      return next
+    })
+  }, [])
+
   const copiarEnlace = useCallback(async () => {
     if (!shareUrl) return
     try {
       await navigator.clipboard.writeText(shareUrl)
-      setCopiado(true)
-      window.setTimeout(() => setCopiado(false), 2000)
-    } catch (_) {}
-  }, [shareUrl])
+      setFeedback('Enlace copiado', 'success')
+    } catch (_) {
+      setFeedback('No se pudo copiar el enlace', 'error')
+    }
+  }, [shareUrl, setFeedback])
 
   const toggleYoutubeFullscreen = useCallback(() => {
     const el = lightboxYoutubeWrapRef.current
@@ -114,6 +143,7 @@ const GaleriaSection: React.FC<GaleriaSectionProps> = ({ eventoSeleccionado, onS
     if (navigator.share) {
       try {
         await navigator.share({ title, text: title, url: shareUrl })
+        setFeedback('Contenido compartido', 'success')
       } catch (err) {
         if ((err as Error).name === 'AbortError') return
         await copiarEnlace()
@@ -121,7 +151,7 @@ const GaleriaSection: React.FC<GaleriaSectionProps> = ({ eventoSeleccionado, onS
     } else {
       await copiarEnlace()
     }
-  }, [shareUrl, itemModal, eventoSeleccionado, copiarEnlace])
+  }, [shareUrl, itemModal, eventoSeleccionado, copiarEnlace, setFeedback])
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -135,16 +165,44 @@ const GaleriaSection: React.FC<GaleriaSectionProps> = ({ eventoSeleccionado, onS
         e.preventDefault()
         goNext()
       }
+      if (e.key === 'Tab') {
+        const overlay = modalOverlayRef.current
+        if (!overlay) return
+        const focusable = Array.from(
+          overlay.querySelectorAll<HTMLElement>(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+          ),
+        ).filter((el) => !el.hasAttribute('disabled') && el.getAttribute('aria-hidden') !== 'true')
+        if (focusable.length === 0) return
+        const first = focusable[0]
+        const last = focusable[focusable.length - 1]
+        if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault()
+          first.focus()
+        } else if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault()
+          last.focus()
+        }
+      }
     }
     if (itemModal) {
       document.addEventListener('keydown', onKey)
       document.body.style.overflow = 'hidden'
+      window.setTimeout(() => closeButtonRef.current?.focus(), 0)
     }
     return () => {
       document.removeEventListener('keydown', onKey)
       document.body.style.overflow = ''
     }
   }, [itemModal, closeModal, goPrev, goNext])
+
+  useEffect(() => {
+    return () => {
+      if (feedbackTimerRef.current) {
+        window.clearTimeout(feedbackTimerRef.current)
+      }
+    }
+  }, [])
 
   return (
     <section id="galeria" className="galeria-section py-5">
@@ -220,10 +278,17 @@ const GaleriaSection: React.FC<GaleriaSectionProps> = ({ eventoSeleccionado, onS
                           <div className="galeria-card-img-wrap ratio ratio-16x9 overflow-hidden">
                             <img
                               src={portada}
-                              alt=""
+                              alt={`Portada del evento ${ev.nombre}`}
                               className="object-fit-cover galeria-card-img"
                               loading="lazy"
+                              decoding="async"
+                              onError={() => marcarImagenError(`portada-${ev.id}`)}
                             />
+                            {imagenesConError.has(`portada-${ev.id}`) && (
+                              <div className="galeria-media-fallback">
+                                <span>No se pudo cargar la portada</span>
+                              </div>
+                            )}
                             <div className="galeria-card-overlay">
                               <span className="galeria-card-cta">Ver en Instagram</span>
                               <span className="galeria-card-count">{label || 'Destacada'}</span>
@@ -251,10 +316,17 @@ const GaleriaSection: React.FC<GaleriaSectionProps> = ({ eventoSeleccionado, onS
                           <div className="galeria-card-img-wrap ratio ratio-16x9 overflow-hidden">
                             <img
                               src={portada}
-                              alt=""
+                              alt={`Portada del evento ${ev.nombre}`}
                               className="object-fit-cover galeria-card-img"
                               loading="lazy"
+                              decoding="async"
+                              onError={() => marcarImagenError(`portada-${ev.id}`)}
                             />
+                            {imagenesConError.has(`portada-${ev.id}`) && (
+                              <div className="galeria-media-fallback">
+                                <span>No se pudo cargar la portada</span>
+                              </div>
+                            )}
                             <div className="galeria-card-overlay">
                               <span className="galeria-card-cta">Ver galería</span>
                               <span className="galeria-card-count">{label}</span>
@@ -374,7 +446,14 @@ const GaleriaSection: React.FC<GaleriaSectionProps> = ({ eventoSeleccionado, onS
                               alt={item.title ?? ''}
                               className="galeria-media-img img-fluid"
                               loading="lazy"
+                              decoding="async"
+                              onError={() => marcarImagenError(`thumb-${item.id}-${item.url}`)}
                             />
+                            {imagenesConError.has(`thumb-${item.id}-${item.url}`) && (
+                              <div className="galeria-media-fallback">
+                                <span>No se pudo cargar la miniatura</span>
+                              </div>
+                            )}
                             <span className="galeria-media-play" aria-hidden>
                               <span className="galeria-media-play__ring">
                                 <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
@@ -400,15 +479,25 @@ const GaleriaSection: React.FC<GaleriaSectionProps> = ({ eventoSeleccionado, onS
                       role="button"
                       tabIndex={0}
                       onClick={() => setItemModal(item)}
-                      onKeyDown={(e) => e.key === 'Enter' && setItemModal(item)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          lastFocusedElementRef.current = e.currentTarget
+                          setItemModal(item)
+                        }
+                      }}
+                      onClickCapture={(e) => {
+                        lastFocusedElementRef.current = e.currentTarget as HTMLElement
+                      }}
                       aria-label={item.type === 'image' ? `Ver imagen: ${item.title ?? 'Foto'}` : 'Ver video'}
                     >
                       {item.type === 'image' ? (
                         <img
                           src={item.url}
-                          alt={item.title ?? ''}
+                          alt={item.title ?? `Foto del evento ${eventoSeleccionado.nombre}`}
                           className="galeria-media-img img-fluid"
                           loading="lazy"
+                          decoding="async"
+                          onError={() => marcarImagenError(`item-${item.id}-${item.url}`)}
                         />
                       ) : ytThumb && ytEmbed ? (
                         <>
@@ -417,6 +506,8 @@ const GaleriaSection: React.FC<GaleriaSectionProps> = ({ eventoSeleccionado, onS
                             alt={item.title ?? ''}
                             className="galeria-media-img img-fluid"
                             loading="lazy"
+                            decoding="async"
+                            onError={() => marcarImagenError(`item-${item.id}-${item.url}`)}
                           />
                           <span className="galeria-media-play" aria-hidden>
                             <span className="galeria-media-play__ring">
@@ -436,6 +527,11 @@ const GaleriaSection: React.FC<GaleriaSectionProps> = ({ eventoSeleccionado, onS
                           playsInline
                         />
                       )}
+                      {imagenesConError.has(`item-${item.id}-${item.url}`) && (
+                        <div className="galeria-media-fallback">
+                          <span>No se pudo cargar este contenido</span>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )
@@ -444,6 +540,7 @@ const GaleriaSection: React.FC<GaleriaSectionProps> = ({ eventoSeleccionado, onS
 
             {itemModal && (
               <div
+                ref={modalOverlayRef}
                 className="galeria-modal-overlay position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center p-2 p-md-3"
                 onClick={closeModal}
                 role="dialog"
@@ -451,6 +548,7 @@ const GaleriaSection: React.FC<GaleriaSectionProps> = ({ eventoSeleccionado, onS
                 aria-label="Vista ampliada"
               >
                 <button
+                  ref={closeButtonRef}
                   type="button"
                   className="galeria-modal-close btn btn-light btn-sm rounded-circle p-2"
                   onClick={closeModal}
@@ -496,6 +594,19 @@ const GaleriaSection: React.FC<GaleriaSectionProps> = ({ eventoSeleccionado, onS
                   className="galeria-modal-inner d-flex flex-column align-items-center"
                   style={{ maxWidth: 'min(96vw, 1200px)', width: '100%' }}
                   onClick={(e) => e.stopPropagation()}
+                  onTouchStart={(e) => {
+                    touchStartXRef.current = e.changedTouches[0]?.clientX ?? null
+                  }}
+                  onTouchEnd={(e) => {
+                    const startX = touchStartXRef.current
+                    const endX = e.changedTouches[0]?.clientX
+                    touchStartXRef.current = null
+                    if (startX == null || endX == null || items.length <= 1) return
+                    const deltaX = endX - startX
+                    if (Math.abs(deltaX) < 45) return
+                    if (deltaX > 0) goPrev()
+                    else goNext()
+                  }}
                 >
                   <div className="galeria-modal-toolbar w-100 mb-3">
                     <div className="galeria-modal-bar d-flex flex-wrap align-items-center justify-content-center gap-2 py-2 px-3">
@@ -510,9 +621,12 @@ const GaleriaSection: React.FC<GaleriaSectionProps> = ({ eventoSeleccionado, onS
                       <button type="button" className="btn btn-sm galeria-modal-action" onClick={copiarEnlace}>
                         Copiar enlace
                       </button>
-                      {copiado && (
-                        <span className="galeria-modal-toast small" role="status">
-                          Copiado
+                      {feedbackToast && (
+                        <span
+                          className={`galeria-modal-toast galeria-modal-toast--${feedbackToast.tone} small`}
+                          role="status"
+                        >
+                          {feedbackToast.message}
                         </span>
                       )}
                     </div>
@@ -525,9 +639,11 @@ const GaleriaSection: React.FC<GaleriaSectionProps> = ({ eventoSeleccionado, onS
                     {itemModal.type === 'image' ? (
                       <img
                         src={itemModal.url}
-                        alt={itemModal.title ?? ''}
+                        alt={itemModal.title ?? `Foto del evento ${eventoSeleccionado?.nombre ?? ''}`.trim()}
                         className="img-fluid d-block mx-auto"
                         style={{ maxHeight: 'min(78vh, 900px)', objectFit: 'contain', width: '100%' }}
+                        decoding="async"
+                        onError={() => marcarImagenError(`modal-${itemModal.id}-${itemModal.url}`)}
                       />
                     ) : modalYoutubeEmbed ? (
                       <div
