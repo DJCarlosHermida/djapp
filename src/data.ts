@@ -8,49 +8,57 @@ export const WHATSAPP_PHONE = '59891332854'
 
 export const EVENTOS_GALERIA: Evento[] = [
   {
-    id: 'boda-martinez-2024',
+    id: 'boda-casamiento',
     nombre: 'BODAS & CASAMIENTOS',
     categoria: 'Bodas',
     fecha: 'Diciembre 2024',
-    lugar: 'Punta del Este',
+    lugar: 'Uruguay',
     portada: '',
     items: [
       {
         id: '1',
         type: 'video',
-        url: 'https://youtu.be/wXe6WHC6Ai0',
-        title: 'DJ en acción',
+        url: 'https://youtu.be/XfUUHudkdTs',
+        title: 'Boda Ana & Lucho',
         lightboxMaxWidth: 300,
-        playInline: true,
+        playInline: false,
+      },
+      {
+        id: '2',
+        type: 'video',
+        url: 'https://youtu.be/nhh1XQ7G8Qc',
+        title: 'Casamiento Anacelia & Pablo',
+        lightboxMaxWidth: 300,
+        playInline: false,
       },
     ],
   },
   {
-    id: 'fiesta-15-2024',
+    id: 'fiesta-15',
     nombre: '15 AÑOS',
     categoria: '15 años',
     fecha: 'Noviembre 2024',
     lugar: 'Montevideo',
     portada: 'https://picsum.photos/seed/evento15/800/600',
     items: [
-      { id: '1', type: 'image', url: 'https://picsum.photos/seed/f15-1/800/600' }
+      { id: '1', type: 'video', url: 'https://youtu.be/wXe6WHC6Ai0?list=PLqXyPPT4x331SvYcUJEIMzLiWsD2U-Mjp', }
     ],
   },
   {
-    id: 'corporativo-2024',
-    nombre: 'EVENTOS EMPRESARIALES',
+    id: 'empresarial-corporativo',
+    nombre: 'EVENTOS EMPRESARIALES & CORPORATIVOS',
     categoria: 'Empresarial',
     fecha: 'Octubre 2024',
     lugar: 'Montevideo',
     portada: 'https://picsum.photos/seed/corp/800/600',
     items: [
-      { id: '1', type: 'image', url: 'https://picsum.photos/seed/corp1/800/600' },
-      { id: '2', type: 'image', url: 'https://picsum.photos/seed/corp2/800/600' },
+      { id: '1', type: 'video', url: 'https://picsum.photos/seed/corp1/800/600' },
+      { id: '2', type: 'video', url: 'https://picsum.photos/seed/corp2/800/600' },
     ],
   },
   {
-    id: 'despedidas-2024',
-    nombre: 'DESPEDIDAS',
+    id: 'despedidas-graduaciones',
+    nombre: 'DESPEDIDAS & GRADUACIONES',
     categoria: 'Despedidas',
     fecha: 'Octubre 2024',
     lugar: 'Montevideo',
