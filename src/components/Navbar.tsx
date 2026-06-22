@@ -53,6 +53,9 @@ const Navbar: React.FC<NavbarProps> = ({ equalizerActive, navScrolled, theme, on
             <a className="nav-link" href="#galeria">Galería</a>
           </li>
           <li className="nav-item">
+            <a className="nav-link" href="/yousong">YouSong</a>
+          </li>
+          <li className="nav-item">
             <a className="nav-link" href="#social">Redes</a>
           </li>
           <li className="nav-item">

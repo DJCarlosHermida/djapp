@@ -9,6 +9,7 @@ import {
   ResenasSection,
   GaleriaSection,
   ContactSection,
+  YouSong,
 } from './components'
 import type { Evento, OpcionDiscotecaId, ServicioId } from './types'
 import { IDLE_TIMEOUT_MS, SCROLL_THRESHOLD, THROTTLE_MS } from './data'
@@ -23,6 +24,7 @@ import {
 import type { ParsedAppHash } from './hashNavigation'
 
 const App: React.FC = () => {
+  const [routePath, setRoutePath] = useState(() => normalizeRoutePath(window.location.pathname))
   const [equalizerActive, setEqualizerActive] = useState(false)
   const [navScrolled, setNavScrolled] = useState(false)
   const [eventoSeleccionado, setEventoSeleccionado] = useState<Evento | null>(null)
@@ -59,6 +61,13 @@ const App: React.FC = () => {
   }, [theme])
 
   const toggleTheme = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))
+
+  useEffect(() => {
+    const handleRouteChange = () => setRoutePath(normalizeRoutePath(window.location.pathname))
+
+    window.addEventListener('popstate', handleRouteChange)
+    return () => window.removeEventListener('popstate', handleRouteChange)
+  }, [])
 
   const startIdleOffTimer = () => {
     if (idleTimerRef.current) clearTimeout(idleTimerRef.current)
@@ -242,6 +251,10 @@ const App: React.FC = () => {
     })
   }
 
+  if (routePath === '/yousong') {
+    return <YouSong />
+  }
+
   return (
     <>
       <Navbar
@@ -276,6 +289,11 @@ const App: React.FC = () => {
       <Footer />
     </>
   )
+}
+
+const normalizeRoutePath = (pathname: string) => {
+  const normalizedPath = pathname.replace(/\/+$/, '')
+  return normalizedPath || '/'
 }
 
 export default App
