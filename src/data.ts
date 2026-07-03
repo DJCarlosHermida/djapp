@@ -181,6 +181,7 @@ export const TECH_STACK: TechItem[] = [
   { name: 'MongoDB', slug: 'mongodb', color: '47A248' },
   { name: 'SQL', slug: 'postgresql', color: '4169E1' },
   { name: 'Docker', slug: 'docker', color: '2496ED' },
+  { name: 'Git', slug: 'git', color: 'F05032' },
   { name: 'bcrypt', slug: 'bcrypt', color: '00A8E1', fallbackIcon: true },
   { name: 'Vitest', slug: 'vitest', color: '6E9F18' },
 ]
