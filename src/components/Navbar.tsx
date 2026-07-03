@@ -38,25 +38,25 @@ const Navbar: React.FC<NavbarProps> = ({ equalizerActive, navScrolled, theme, on
       <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul className="navbar-nav gap-2">
           <li className="nav-item">
-            <a className="nav-link" href="#home">Home</a>
+            <a className="nav-link" href="#home" title='Inicio'>Home</a>
           </li>
           {/* <li className="nav-item">
             <a className="nav-link" href="#remix">Remix</a>
           </li> */}
           <li className="nav-item">
-            <a className="nav-link" href="#services">Servicios</a>
+            <a className="nav-link" href="#services" title='Servicios'>Servicios</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="#about">Sobre mí</a>
+            <a className="nav-link" href="#about" title='Sobre mí'>Sobre mí</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="#galeria">Galería</a>
+            <a className="nav-link" href="#galeria" title='Galería'>Galería</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/yousong">YouSong</a>
+            <a className="nav-link" href="/yousong" target="_blank" title='Pedí tu canción'>YouSong</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="#social">Redes</a>
+            <a className="nav-link" href="#social" title='Redes Sociales'>Redes</a>
           </li>
           <li className="nav-item">
             <button
@@ -89,7 +89,7 @@ const Navbar: React.FC<NavbarProps> = ({ equalizerActive, navScrolled, theme, on
             <UruguayFlag size={24} className="nav-flag" />
           </li>
           <li className="nav-item">
-            <a className="btn btn-sm btn-light ms-lg-3" href="#form">Contacto</a>
+            <a className="btn btn-sm btn-light ms-lg-3" href="#form" title='Contacto' >Contacto</a>
           </li>
         </ul>
       </div>
