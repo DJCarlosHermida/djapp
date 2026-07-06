@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import { WHATSAPP_PHONE } from '../data'
+import type { ContactSubmitStatus } from '../hooks/useContactForm'
 import type { OpcionDiscotecaId, ServicioId } from '../types'
 
 type ContactSectionProps = {
-  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void
+  onSubmit: (event: React.FormEvent<HTMLFormElement>) => Promise<boolean>
+  submitStatus: ContactSubmitStatus
+  submitError: string | null
+  submitSuccess: string | null
   initialServicio: ServicioId | null
   initialOpcionDiscoteca: OpcionDiscotecaId | null
 }
 
 const ContactSection: React.FC<ContactSectionProps> = ({
   onSubmit,
+  submitStatus,
+  submitError,
+  submitSuccess,
   initialServicio,
   initialOpcionDiscoteca,
 }) => {
@@ -21,11 +28,15 @@ const ContactSection: React.FC<ContactSectionProps> = ({
     setOpcionDj(initialOpcionDiscoteca ?? '')
   }, [initialServicio, initialOpcionDiscoteca])
 
-  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    onSubmit(event)
-    setServicio('')
-    setOpcionDj('')
+  const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    const ok = await onSubmit(event)
+    if (ok) {
+      setServicio('')
+      setOpcionDj('')
+    }
   }
+
+  const isLoading = submitStatus === 'loading'
 
   return (
   <section id="form" className="py-5">
@@ -50,22 +61,32 @@ const ContactSection: React.FC<ContactSectionProps> = ({
           >
             Consulta rapida por WhatsApp
           </a>
-          <form onSubmit={handleFormSubmit} className="contact-form row g-3">
+          {submitSuccess && (
+            <div className="alert alert-success" role="status">
+              {submitSuccess}
+            </div>
+          )}
+          {submitError && (
+            <div className="alert alert-danger" role="alert">
+              {submitError}
+            </div>
+          )}
+          <form onSubmit={handleFormSubmit} className="contact-form row g-3" noValidate>
             <div className="col-md-6">
               <label htmlFor="name" className="form-label">Nombre*</label>
-              <input id="name" name="name" className="form-control" required />
+              <input id="name" name="name" className="form-control" required disabled={isLoading} />
             </div>
             <div className="col-md-6">
               <label htmlFor="lastname" className="form-label">Apellido</label>
-              <input id="lastname" name="lastname" className="form-control" />
+              <input id="lastname" name="lastname" className="form-control" disabled={isLoading} />
             </div>
             <div className="col-md-6">
               <label htmlFor="email" className="form-label">Email*</label>
-              <input id="email" name="Email" type="email" className="form-control" required />
+              <input id="email" name="Email" type="email" className="form-control" required disabled={isLoading} />
             </div>
             <div className="col-md-6">
               <label htmlFor="phone" className="form-label">Teléfono*</label>
-              <input id="phone" name="phone" className="form-control" required />
+              <input id="phone" name="phone" className="form-control" required disabled={isLoading} />
             </div>
             <div className="col-md-6">
               <label htmlFor="service" className="form-label">Servicio a cotizar*</label>
@@ -74,6 +95,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({
                 name="service"
                 className="form-select"
                 required
+                disabled={isLoading}
                 value={servicio}
                 onChange={(e) => {
                   const value = e.target.value as ServicioId | ''
@@ -94,6 +116,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({
                   id="opcionDj"
                   name="opcionDj"
                   className="form-select"
+                  disabled={isLoading}
                   value={opcionDj}
                   onChange={(e) => setOpcionDj(e.target.value as OpcionDiscotecaId | '')}
                 >
@@ -106,17 +129,14 @@ const ContactSection: React.FC<ContactSectionProps> = ({
             )}
             <div className="col-12">
               <label htmlFor="message" className="form-label">Mensaje*</label>
-              <textarea id="message" name="message" rows={4} className="form-control" required />
+              <textarea id="message" name="message" rows={4} className="form-control" required disabled={isLoading} />
             </div>
             <div className="col-12">
-              <small className="text-muted">* campos obligatorios</small> <br />
-              <small className="text-muted">
-                ** Para mayor seguridad el formulario cargará automaticamente los datos ingresados a tu aplicación de correo, solo tenés que confirmar el envío
-              </small>
+              <small className="text-muted">* campos obligatorios</small>
             </div>
             <div className="col-12">
-              <button type="submit" className="btn btn-dark">
-                Enviar
+              <button type="submit" className="btn btn-dark" disabled={isLoading}>
+                {isLoading ? 'Enviando…' : 'Enviar'}
               </button>
             </div>
           </form>

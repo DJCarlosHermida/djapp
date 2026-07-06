@@ -5,6 +5,22 @@ export const IDLE_TIMEOUT_MS = 4000
 export const SCROLL_THRESHOLD = 40
 export const THROTTLE_MS = 200
 export const WHATSAPP_PHONE = '59891332854'
+export const CONTACT_EMAIL = 'djcarloshermida@outlook.com'
+
+/** Rutas bajo /public/img/galeria */
+const gal = (file: string) => `/img/galeria/${file}`
+
+export const SERVICIO_ETIQUETAS: Record<'dj' | 'musica' | 'web', string> = {
+  dj: 'DJ y Discoteca',
+  musica: 'Producción musical y remixes',
+  web: 'Programación web',
+}
+
+export const OPCION_DJ_ETIQUETAS: Record<'basico' | 'estandar' | 'full', string> = {
+  basico: 'Básico',
+  estandar: 'Estándar',
+  full: 'Full',
+}
 
 export const EVENTOS_GALERIA: Evento[] = [
   {
@@ -38,44 +54,123 @@ export const EVENTOS_GALERIA: Evento[] = [
     nombre: '15 AÑOS',
     categoria: '15 años',
     fecha: 'Noviembre 2024',
-    lugar: 'Montevideo',
-    portada: 'https://picsum.photos/seed/evento15/800/600',
+    lugar: 'Montevideo y zona',
+    portada: gal('6-1200x1600-800x1067.jpg'),
     items: [
-      { id: '1', type: 'video', url: 'https://youtu.be/wXe6WHC6Ai0?list=PLqXyPPT4x331SvYcUJEIMzLiWsD2U-Mjp', }
+      {
+        id: '1',
+        type: 'video',
+        url: 'https://youtu.be/wXe6WHC6Ai0?list=PLqXyPPT4x331SvYcUJEIMzLiWsD2U-Mjp',
+        title: 'Fiesta de 15 años',
+      },
+      {
+        id: '2',
+        type: 'image',
+        url: gal('2-1200x800-800x533.jpg'),
+        title: 'XV Agustina Rodríguez — Piedras Coloradas',
+      },
+      {
+        id: '3',
+        type: 'image',
+        url: gal('4-1200x800-800x533.jpg'),
+        title: 'XV Florence Wallace — Loma Verde, Young',
+      },
+      {
+        id: '4',
+        type: 'image',
+        url: gal('7-1200x1600-800x1067.jpg'),
+        title: 'XV Tamila De Los Santos — Ajupy, Young',
+      },
+      {
+        id: '5',
+        type: 'image',
+        url: gal('8-1200x1600-800x1067.jpg'),
+        title: 'XV Tamila De Los Santos — Ajupy, Young',
+      },
     ],
   },
   {
     id: 'empresarial-corporativo',
     nombre: 'EVENTOS EMPRESARIALES & CORPORATIVOS',
     categoria: 'Empresarial',
-    fecha: 'Octubre 2024',
-    lugar: 'Montevideo',
-    portada: 'https://picsum.photos/seed/corp/800/600',
+    fecha: '2024',
+    lugar: 'Uruguay',
+    portada: '/img/ander-burdain-180587-2000x1333.jpg',
     items: [
-      { id: '1', type: 'video', url: 'https://picsum.photos/seed/corp1/800/600' },
-      { id: '2', type: 'video', url: 'https://picsum.photos/seed/corp2/800/600' },
+      {
+        id: '1',
+        type: 'image',
+        url: gal('12-1200x800-800x533.jpg'),
+        title: 'Ambientación y sonido en evento corporativo',
+      },
+      {
+        id: '2',
+        type: 'image',
+        url: gal('13-1200x800-800x533.jpg'),
+        title: 'Iluminación y pista para evento empresarial',
+      },
+      {
+        id: '3',
+        type: 'image',
+        url: gal('16-1200x800-800x533.jpg'),
+        title: 'Musicalización profesional en vivo',
+      },
     ],
   },
   {
     id: 'despedidas-graduaciones',
     nombre: 'DESPEDIDAS & GRADUACIONES',
     categoria: 'Despedidas',
-    fecha: 'Octubre 2024',
+    fecha: '2024',
     lugar: 'Montevideo',
-    portada: 'https://picsum.photos/seed/corp/800/600',
+    portada: gal('15-1200x800-800x533.jpg'),
     items: [
-      { id: '1', type: 'image', url: 'https://picsum.photos/seed/corp1/800/600' }
+      {
+        id: '1',
+        type: 'image',
+        url: gal('15-1200x800-800x533.jpg'),
+        title: 'Despedida — pista y ambientación',
+      },
+      {
+        id: '2',
+        type: 'image',
+        url: gal('17-1200x800-800x533.jpg'),
+        title: 'Graduación — iluminación y sonido',
+      },
+      {
+        id: '3',
+        type: 'image',
+        url: gal('5-1200x800-800x533.jpg'),
+        title: 'XV Lucía Apollonia — Loma Verde, Young',
+      },
     ],
   },
   {
     id: 'desfiles-2024',
     nombre: 'DESFILES',
     categoria: 'Desfiles',
-    fecha: 'Octubre 2024',
+    fecha: '2024',
     lugar: 'Montevideo',
-    portada: 'https://picsum.photos/seed/corp/800/600',
+    portada: gal('10-1200x800-800x533.jpg'),
     items: [
-      { id: '1', type: 'image', url: 'https://picsum.photos/seed/corp1/800/600' }
+      {
+        id: '1',
+        type: 'image',
+        url: gal('10-1200x800-800x533.jpg'),
+        title: 'Desfile — iluminación escénica',
+      },
+      {
+        id: '2',
+        type: 'image',
+        url: gal('11-1200x800-800x533.jpg'),
+        title: 'Desfile — ambientación y sonido',
+      },
+      {
+        id: '3',
+        type: 'image',
+        url: gal('14-1200x800-800x533.jpg'),
+        title: 'Desfile — producción integral',
+      },
     ],
   },
   {

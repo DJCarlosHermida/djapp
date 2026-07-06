@@ -251,8 +251,12 @@ const ServicesSection = forwardRef<HTMLElement, ServicesSectionProps>(
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                           />
                         ) : (
-                          <div className="d-flex align-items-center justify-content-center text-white-50">
-                            Video próximamente
+                          <div className="d-flex flex-column align-items-center justify-content-center text-white-50 h-100 p-4 services-video-placeholder">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden className="mb-3 opacity-75">
+                              <polygon points="5 3 19 12 5 21 5 3" />
+                            </svg>
+                            <p className="mb-1 fw-semibold text-white">Video demo próximamente</p>
+                            <p className="small text-center mb-0 opacity-75">Estamos preparando el material en YouTube. Mientras tanto, consultá por WhatsApp.</p>
                           </div>
                         )}
                       </div>
