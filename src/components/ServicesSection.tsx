@@ -72,7 +72,7 @@ const ServicesSection = forwardRef<HTMLElement, ServicesSectionProps>(
             Experiencia, equipamiento y versatilidad para tu proyecto.
           </p>
           <div className="row g-4">
-            <div className="col-md-4">
+            <div className="col-12 col-md-4">
               <div
                 className="card h-100 pro-card"
                 onClick={() => onSelectServicio('dj')}
@@ -97,7 +97,7 @@ const ServicesSection = forwardRef<HTMLElement, ServicesSectionProps>(
                 </div>
               </div>
             </div>
-            <div className="col-md-4">
+            <div className="col-12 col-md-4">
               <div
                 className="card h-100 pro-card"
                 onClick={() => onSelectServicio('musica')}
@@ -124,7 +124,7 @@ const ServicesSection = forwardRef<HTMLElement, ServicesSectionProps>(
                 </div>
               </div>
             </div>
-            <div className="col-md-4">
+            <div className="col-12 col-md-4">
               <div
                 className="card h-100 pro-card"
                 onClick={() => onSelectServicio('web')}
@@ -241,7 +241,6 @@ const ServicesSection = forwardRef<HTMLElement, ServicesSectionProps>(
                     <div
                       ref={videoWrapperRef}
                       className="services-discoteca-video-wrap position-relative rounded-3 overflow-hidden bg-dark mb-0"
-                      style={{ width: '350px', maxWidth: '100%' }}
                     >
                       <div className="ratio ratio-16x9">
                         {discotecaEmbedSrc ? (

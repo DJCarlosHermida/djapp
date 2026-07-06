@@ -31,7 +31,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({
   <section id="form" className="py-5">
     <div className="container">
       <div className="row g-4">
-        <div className="col-lg-6">
+        <div className="col-12 col-lg-6 order-2 order-lg-1">
           <h2 className="h2 mb-3">Ante cualquier duda, consulta o solicitud...</h2>
           <p className="mb-4">
             Completá el formulario y me pondré en contacto contigo.
@@ -121,7 +121,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({
             </div>
           </form>
         </div>
-        <div className="col-lg-4">
+        <div className="col-12 col-lg-4 order-1 order-lg-2 offset-lg-2">
           <div className="ratio ratio-4x3">
             <iframe
               title="Ubicación DJ Carlos Hermida"

@@ -16,7 +16,7 @@ const Hero: React.FC = () => {
     <div className="hero-overlay"></div>
     <div className="container position-relative text-center text-md-start">
       <div className="row align-items-center g-4">
-        <div className="col-md-7">
+        <div className="col-12 col-md-7">
           <p className="text-uppercase small mb-2 text-accent">
             DJ y Discoteca para todo tipo de eventos...
           </p>
@@ -24,13 +24,22 @@ const Hero: React.FC = () => {
           <p className="lead mb-4 hero-subtitle">
             | Bodas | 15 Años | Despedidas | Desfiles | Amplificaciones | Infantiles | Eventos Empresariales |
           </p>
-          <div className="d-flex flex-wrap gap-3">
+          <div className="d-flex flex-wrap gap-3 justify-content-center justify-content-md-start">
             <a href="#form" className="btn btn-primary btn-lg rounded-pill px-4">
               Reserva tu fecha
             </a>
             <a href="#galeria" className="btn btn-outline-light btn-lg rounded-pill px-4">
               Ver Eventos
             </a>
+          </div>
+        </div>
+        <div className="col-12 d-md-none">
+          <div className="hero-card hero-card--mobile shadow-lg rounded-4 p-3 bg-dark bg-opacity-75">
+            <p className="mb-1 text-uppercase small text-accent">Experiencia</p>
+            <h2 className="h5 mb-2" style={{ color: '#ff9f43' }}>Más de 20 años de trayectoria</h2>
+            <p className="mb-0 small">
+              DJ y Productor Uruguayo. Especializado en bodas, 15 años, despedidas y eventos empresariales.
+            </p>
           </div>
         </div>
         <div className="col-md-5 d-none d-md-block">

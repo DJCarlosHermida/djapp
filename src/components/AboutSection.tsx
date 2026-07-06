@@ -4,14 +4,14 @@ export default function AboutSection() {
     <section id="about" className="about-section py-5">
       <div className="container">
         <div className="row align-items-center g-4">
-          <div className="col-lg-6">
+          <div className="col-12 col-lg-6">
             <img
               src="/img/mbr-1620x1080.jpg"
               alt="DJ Carlos Hermida en evento"
               className="img-fluid rounded shadow about-section__img"
             />
           </div>
-          <div className="col-lg-6">
+          <div className="col-12 col-lg-6">
             <h2 className="about-section__title h2 mb-4">Sobre DJ Carlos Hermida</h2>
             <div className="about-section__text">
               <p className="about-section__lead">

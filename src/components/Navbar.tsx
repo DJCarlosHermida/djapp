@@ -22,7 +22,10 @@ const Navbar: React.FC<NavbarProps> = ({ equalizerActive, navScrolled, theme, on
     </div>
     <div className="container navbar-equalizer-content">
       <a className="navbar-brand fw-bold" href="#home">
-        DJ Carlos Hermida | <i style={{ color: 'orange' }}> Music &amp; Web </i>
+        <span className="d-inline d-sm-none">DJ Carlos H. <i style={{ color: 'orange' }}>M&amp;W</i></span>
+        <span className="d-none d-sm-inline">
+          DJ Carlos Hermida | <i style={{ color: 'orange' }}> Music &amp; Web </i>
+        </span>
       </a>
       <button
         className="navbar-toggler"

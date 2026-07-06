@@ -264,7 +264,7 @@ const GaleriaSection: React.FC<GaleriaSectionProps> = ({ eventoSeleccionado, onS
                   return (
                     <div
                       key={ev.id}
-                      className="col-md-6 col-lg-4 galeria-grid__cell"
+                      className="col-12 col-sm-6 col-lg-4 galeria-grid__cell"
                       style={{ '--galeria-stagger': stagger } as React.CSSProperties}
                     >
                       {ev.instagramHighlightUrl ? (
@@ -392,7 +392,7 @@ const GaleriaSection: React.FC<GaleriaSectionProps> = ({ eventoSeleccionado, onS
                 if (inline && ytEmbed) {
                   return (
                     <div key={`${item.id}-${item.url}`} className="col-12">
-                      <div className="mx-auto" style={{ maxWidth: maxInlineW, width: '100%' }}>
+                      <div className="mx-auto galeria-inline-yt-wrap" style={{ maxWidth: `min(100%, ${maxInlineW}px)`, width: '100%' }}>
                         {playingInline ? (
                           <>
                             <div
