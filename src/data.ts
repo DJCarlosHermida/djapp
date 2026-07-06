@@ -297,23 +297,21 @@ export const TESTIMONIOS: TestimonioItem[] = [
     nombre: 'Valentina y Martin',
     tipoEvento: 'Boda',
     texto:
-      'Carlos hizo que la fiesta no parara en toda la noche. Sonido impecable, gran lectura del publico y trato super profesional.',
+      'Carlos hizo que la fiesta no parara en toda la noche. Sonido impecable, gran lectura del público y trato súper profesional.',
     rating: 5,
   },
   {
     id: 'testimonio-2',
-    nombre: 'Familia Rodriguez',
+    nombre: 'Familia Rodríguez',
     tipoEvento: 'Fiesta de 15',
-    texto:
-      'Contratamos el servicio estandar y fue excelente. Puntualidad, iluminacion de calidad y musica perfecta para cada momento.',
+    texto: 'Contratamos el servicio estándar y fue excelente.',
     rating: 5,
   },
   {
     id: 'testimonio-3',
     nombre: 'Empresa Delta',
     tipoEvento: 'Evento empresarial',
-    texto:
-      'Muy recomendable para eventos corporativos: audio claro, coordinacion ordenada y una propuesta musical adaptable al perfil del evento.',
+    texto: 'Muy recomendable para eventos empresariales.',
     rating: 5,
   },
 ]
