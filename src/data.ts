@@ -1,4 +1,5 @@
 import type { Evento, PortfolioLink, TechItem } from './types'
+import todolistThumb from './assets/portfolio/todolist.png'
 
 export const EQUALIZER_BARS = 48
 export const IDLE_TIMEOUT_MS = 4000
@@ -240,7 +241,7 @@ export const PORTFOLIO_LINKS: PortfolioLink[] = [
     url: 'https://todolist-lilac-beta.vercel.app/',
     descripcion:
       'Gestor de tareas con filtros, prioridad, fecha de vencimiento y arrastre para reordenar. Los datos quedan en el navegador.',
-    thumbnail: '/img/portfolio/todolist.png',
+    thumbnail: todolistThumb,
   },
   {
     nombre: 'Chat WebSocket',
