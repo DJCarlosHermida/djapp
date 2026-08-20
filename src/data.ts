@@ -240,6 +240,7 @@ export const PORTFOLIO_LINKS: PortfolioLink[] = [
     url: 'https://todolist-lilac-beta.vercel.app/',
     descripcion:
       'Gestor de tareas con filtros, prioridad, fecha de vencimiento y arrastre para reordenar. Los datos quedan en el navegador.',
+    thumbnail: '/img/portfolio/todolist.png',
   },
   {
     nombre: 'Chat WebSocket',
