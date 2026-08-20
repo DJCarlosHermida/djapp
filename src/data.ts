@@ -233,19 +233,19 @@ export const PORTFOLIO_LINKS: PortfolioLink[] = [
   { nombre: 'Estudio GP', url: 'https://estudiogp.uy/', descripcion: 'Brindamos soluciones contables personalizadas para pequeñas, medianas y grandes empresas, asegurando su éxito y crecimiento con un equipo de expertos.' },
   { nombre: 'Inquilinos Verificados', url: 'https://inquilinosverificados.vercel.app/', descripcion: 'Plataforma para alquilar en Uruguay sin comisiones inmobiliarias ni garantías clásicas, con perfiles de inquilinos revisados a mano.', },
   { nombre: 'DJ TEAM | Ecommerce', url: 'https://djcarloshermida.vercel.app/', descripcion: 'Simulador de e-commerce de productos para fiestas y eventos: catálogo, carrito y flujo de compra.' },
-
-
-  {
-    nombre: 'Chat WebSocket',
-    url: 'https://chat-websocket-p00q.onrender.com/',
-    descripcion:
-      'Aplicación de chat en tiempo real con WebSocket: mensajes instantáneos y usuarios conectados en vivo.',
-  },
+  
+  
   {
     nombre: 'TodoList',
     url: 'https://todolist-lilac-beta.vercel.app/',
     descripcion:
       'Gestor de tareas con filtros, prioridad, fecha de vencimiento y arrastre para reordenar. Los datos quedan en el navegador.',
+  },
+  {
+    nombre: 'Chat WebSocket',
+    url: 'https://chat-websocket-p00q.onrender.com/',
+    descripcion:
+      'Aplicación de chat en tiempo real con WebSocket: mensajes instantáneos y usuarios conectados en vivo.',
   },
 ]
 
