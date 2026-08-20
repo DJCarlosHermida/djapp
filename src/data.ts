@@ -231,32 +231,9 @@ export function eventoPortadaUrl(ev: Evento): string {
 export const PORTFOLIO_LINKS: PortfolioLink[] = [
   { nombre: 'Cantor Criollo', url: 'https://cantorcriolloweb.vercel.app/', descripcion: 'Tiene como intención divulgar materiales de diferentes formatos que forman parte del archivo Marcos Velásquez. Por citar algunos ejemplos: fotografías, afiches, grabaciones, textos, conciertos y letras de canciones . ' },
   { nombre: 'Estudio GP', url: 'https://estudiogp.uy/', descripcion: 'Brindamos soluciones contables personalizadas para pequeñas, medianas y grandes empresas, asegurando su éxito y crecimiento con un equipo de expertos.' },
-  {
-    nombre: 'Inquilinos Verificados',
-    url: 'https://inquilinosverificados.vercel.app/',
-    descripcion:
-      'Plataforma para alquilar en Uruguay sin comisiones inmobiliarias ni garantías clásicas, con perfiles de inquilinos revisados a mano.',
-  },
+  { nombre: 'Inquilinos Verificados', url: 'https://inquilinosverificados.vercel.app/', descripcion: 'Plataforma para alquilar en Uruguay sin comisiones inmobiliarias ni garantías clásicas, con perfiles de inquilinos revisados a mano.', },
   { nombre: 'DJ TEAM | Ecommerce', url: 'https://djcarloshermida.vercel.app/', descripcion: 'Simulador de e-commerce de productos para fiestas y eventos: catálogo, carrito y flujo de compra.' },
 
-  /* {
-    nombre: 'Game Car',
-    url: 'https://djcarloshermida.github.io/gameCar/',
-    descripcion:
-      'Juego en el navegador: evitá chocar con otros autos usando las flechas del teclado. Clic para comenzar, ritmo arcade y reglas claras en pantalla.',
-  },
-  {
-    nombre: 'Game Pollo',
-    url: 'https://djcarloshermida.github.io/gamePollo/',
-    descripcion:
-      'Ayudá al pollito a cruzar el camino: movimiento con flechas, pantalla de carga y textos en inglés y español. Replay para volver a jugar.',
-  },
-  {
-    nombre: 'Snake Game',
-    url: 'https://djcarloshermida.github.io/gameSnake/',
-    descripcion:
-      'Clásico Snake en el navegador: control con flechas, puntaje en pantalla y la mecánica que todos conocen.',
-  }, */
 
   {
     nombre: 'Chat WebSocket',
