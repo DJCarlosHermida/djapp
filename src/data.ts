@@ -241,6 +241,12 @@ export const PORTFOLIO_LINKS: PortfolioLink[] = [
     descripcion:
       'Aplicación de chat en tiempo real con WebSocket: mensajes instantáneos y usuarios conectados en vivo.',
   },
+  {
+    nombre: 'TodoList',
+    url: 'https://todolist-lilac-beta.vercel.app/',
+    descripcion:
+      'Gestor de tareas con filtros, prioridad, fecha de vencimiento y arrastre para reordenar. Los datos quedan en el navegador.',
+  },
 ]
 
 /** Tecnologías mostradas como miniaturas debajo del portfolio */
