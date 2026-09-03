@@ -1,6 +1,7 @@
 import { forwardRef, useRef } from 'react'
 import type { OpcionDiscotecaId, ServicioId } from '../types'
 import { PORTFOLIO_LINKS, portfolioPreviewUrl, TECH_STACK, WHATSAPP_PHONE, youtubeEmbedSrc } from '../data'
+import { toggleFullscreen } from '../dom/fullscreen'
 
 const OPCIONES_DISCOTECA: Array<{
   id: OpcionDiscotecaId
@@ -48,16 +49,6 @@ type ServicesSectionProps = {
 const ServicesSection = forwardRef<HTMLElement, ServicesSectionProps>(
   function ServicesSectionInner({ servicioSeleccionado, onSelectServicio, opcionDiscoteca, onSelectOpcionDiscoteca, onCotizar }, ref) {
     const videoWrapperRef = useRef<HTMLDivElement>(null)
-
-    const toggleFullscreen = () => {
-      const el = videoWrapperRef.current
-      if (!el) return
-      if (!document.fullscreenElement) {
-        el.requestFullscreen().catch(() => {})
-      } else {
-        document.exitFullscreen()
-      }
-    }
 
     return (
       <section ref={ref} id="services" className="services-section py-5">
@@ -263,7 +254,7 @@ const ServicesSection = forwardRef<HTMLElement, ServicesSectionProps>(
                       <button
                         type="button"
                         className="btn btn-sm position-absolute bottom-0 end-0 m-2 services-discoteca-video-fullscreen-btn"
-                        onClick={toggleFullscreen}
+                        onClick={() => toggleFullscreen(videoWrapperRef.current)}
                         title="Pantalla completa"
                         aria-label="Pantalla completa"
                       >

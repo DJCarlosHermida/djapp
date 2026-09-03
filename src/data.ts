@@ -7,6 +7,8 @@ export const SCROLL_THRESHOLD = 40
 export const THROTTLE_MS = 200
 export const WHATSAPP_PHONE = '59891332854'
 export const CONTACT_EMAIL = 'djcarloshermida@outlook.com'
+export const WHATSAPP_DEFAULT_MSG =
+  'Hola Carlos, quiero consultar por un servicio (DJ, música o web).'
 
 /** Rutas bajo /public/img/galeria */
 const gal = (file: string) => `/img/galeria/${file}`

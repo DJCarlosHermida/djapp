@@ -1,4 +1,5 @@
 import { useCallback, useState, type FormEvent } from 'react'
+import { validateContactFields } from '../contactValidation'
 
 export type ContactSubmitStatus = 'idle' | 'loading' | 'success' | 'error'
 
@@ -22,13 +23,24 @@ export function useContactForm({ onSuccess }: UseContactFormOptions = {}) {
     const formElement = event.currentTarget
     const formData = new FormData(formElement)
 
-    const name = formData.get('name')?.toString() ?? ''
-    const lastname = formData.get('lastname')?.toString() ?? ''
-    const phone = formData.get('phone')?.toString() ?? ''
-    const email = formData.get('Email')?.toString() ?? ''
-    const message = formData.get('message')?.toString() ?? ''
-    const service = formData.get('service')?.toString() ?? ''
-    const opcionDj = formData.get('opcionDj')?.toString() ?? ''
+    const fields = {
+      name: formData.get('name')?.toString() ?? '',
+      lastname: formData.get('lastname')?.toString() ?? '',
+      phone: formData.get('phone')?.toString() ?? '',
+      email: formData.get('email')?.toString() ?? '',
+      message: formData.get('message')?.toString() ?? '',
+      service: formData.get('service')?.toString() ?? '',
+      opcionDj: formData.get('opcionDj')?.toString() ?? '',
+      website: formData.get('website')?.toString() ?? '',
+    }
+
+    const parsed = validateContactFields(fields)
+    if (!parsed.ok) {
+      setStatus('error')
+      setErrorMessage(parsed.error)
+      setSuccessMessage(null)
+      return false
+    }
 
     setStatus('loading')
     setErrorMessage(null)
@@ -38,7 +50,7 @@ export function useContactForm({ onSuccess }: UseContactFormOptions = {}) {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, lastname, email, phone, message, service, opcionDj }),
+        body: JSON.stringify({ ...parsed.data, website: fields.website }),
       })
 
       const data = (await res.json().catch(() => ({}))) as {

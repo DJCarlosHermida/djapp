@@ -1,0 +1,101 @@
+/* Redes */
+
+.social-section {
+  position: relative;
+  background: linear-gradient(180deg, #100f0e 0%, #0e0d0d 25%, #0d0d0d 50%, #0a0a0a 100%);
+  overflow: hidden;
+}
+
+.social-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 100% 80% at 50% 50%, rgba(255, 159, 67, 0.08) 0%, rgba(255, 159, 67, 0.02) 40%, transparent 70%);
+  pointer-events: none;
+}
+
+.social-section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.social-section .container {
+  position: relative;
+  z-index: 1;
+}
+
+.social-section h2 {
+  color: var(--accent);
+}
+
+.social-section .text-muted {
+  color: rgba(255, 255, 255, 0.65) !important;
+}
+
+.social-logos {
+  align-items: center;
+}
+
+.social-logo-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border-radius: 50%;
+  color: #333;
+  background-color: #e9ecef !important;
+  filter: grayscale(1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.25s ease, color 0.25s ease, background-color 0.25s ease;
+}
+
+.social-logo-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  filter: none;
+}
+
+.social-logo-btn--facebook:hover { color: #1877f2; }
+
+.social-logo-btn--instagram:hover { color: #e4405f; }
+
+.social-logo-btn--soundcloud:hover { color: #ff5500; }
+
+.social-logo-btn--linkedin:hover { color: #0a66c2; }
+
+.social-logo-btn--x:hover { color: #fff; background-color: #000 !important; }
+
+.social-logo-btn--youtube:hover { color: #ff0000; }
+
+.social-logo-btn--whatsapp:hover { color: #25d366; }
+
+.social-logo {
+  width: 24px;
+  height: 24px;
+}
+
+@media (max-width: 767.98px) {
+  .social-logos {
+      gap: 0.65rem !important;
+    }
+
+  .social-logo-btn {
+      width: 44px;
+      height: 44px;
+    }
+}
+
+[data-theme="light"] .social-section {
+  background: linear-gradient(180deg, #e2dfda 0%, #e0ddda 20%, #e0e0e0 50%, #ddd 100%);
+}
+
+[data-theme="light"] .social-section .text-muted {
+  color: #555 !important;
+}

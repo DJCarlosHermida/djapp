@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { WHATSAPP_PHONE } from '../data'
+import { CONTACT_EMAIL, WHATSAPP_DEFAULT_MSG, WHATSAPP_PHONE } from '../data'
 import type { ContactSubmitStatus } from '../hooks/useContactForm'
 import type { OpcionDiscotecaId, ServicioId } from '../types'
 
@@ -43,23 +43,28 @@ const ContactSection: React.FC<ContactSectionProps> = ({
     <div className="container">
       <div className="row g-4">
         <div className="col-12 col-lg-6 order-2 order-lg-1">
-          <h2 className="h2 mb-3">Ante cualquier duda, consulta o solicitud...</h2>
+          <h2 className="h2 mb-3">Consultá por DJ, música o web</h2>
           <p className="mb-4">
-            Completá el formulario y me pondré en contacto contigo.
+            Completá el formulario y te respondo a la brevedad. Trabajo tres líneas: discoteca para eventos, producción musical y desarrollo web.
           </p>
           <p className="mb-4">
-            Cuéntame la fecha en que se realizará el evento, qué tipo de evento deseas realizar
-            (fiesta de 15, casamiento, desfile, infantil, graduación, despedida etc...)
-            Lugar, horario y cantidad de personas. De esa manera podré asesorarte ajustando el presupuesto a tus necesidades. <br />
+            Si es un evento, indicá fecha, tipo (boda, 15, corporativo, despedida, desfile…), lugar, horario y cantidad de personas.
             <br />
+            Si es música: remix, colaboración o producción (género, referencias y plazo).
+            <br />
+            Si es web: tipo de proyecto (sitio, app o e-commerce) y qué necesitás resolver.
+          </p>
+          <p className="mb-4 small text-muted">
+            Si el envío falla, escribinos por WhatsApp o a{' '}
+            <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
           </p>
           <a
-            href={`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent('Hola Carlos, quiero consultar disponibilidad y presupuesto para un evento.')}`}
+            href={`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(WHATSAPP_DEFAULT_MSG)}`}
             target="_blank"
             rel="noreferrer"
             className="btn btn-success mb-4"
           >
-            Consulta rapida por WhatsApp
+            Consulta rápida por WhatsApp
           </a>
           {submitSuccess && (
             <div className="alert alert-success" role="status">
@@ -72,6 +77,10 @@ const ContactSection: React.FC<ContactSectionProps> = ({
             </div>
           )}
           <form onSubmit={handleFormSubmit} className="contact-form row g-3" noValidate>
+            <div className="contact-honeypot d-none" aria-hidden="true">
+              <label htmlFor="website">Sitio web</label>
+              <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+            </div>
             <div className="col-md-6">
               <label htmlFor="name" className="form-label">Nombre*</label>
               <input id="name" name="name" className="form-control" required disabled={isLoading} />
@@ -82,7 +91,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({
             </div>
             <div className="col-md-6">
               <label htmlFor="email" className="form-label">Email*</label>
-              <input id="email" name="Email" type="email" className="form-control" required disabled={isLoading} />
+              <input id="email" name="email" type="email" className="form-control" required disabled={isLoading} />
             </div>
             <div className="col-md-6">
               <label htmlFor="phone" className="form-label">Teléfono*</label>
@@ -105,13 +114,13 @@ const ContactSection: React.FC<ContactSectionProps> = ({
               >
                 <option value="" disabled>Selecciona un servicio</option>
                 <option value="dj">DJ y Discoteca</option>
-                <option value="musica">Produccion Musical y Remixes</option>
-                <option value="web">Programacion Web</option>
+                <option value="musica">Producción Musical y Remixes</option>
+                <option value="web">Programación Web</option>
               </select>
             </div>
             {servicio === 'dj' && (
               <div className="col-md-6">
-                <label htmlFor="opcionDj" className="form-label">Opcion DJ</label>
+                <label htmlFor="opcionDj" className="form-label">Opción DJ</label>
                 <select
                   id="opcionDj"
                   name="opcionDj"
@@ -120,9 +129,9 @@ const ContactSection: React.FC<ContactSectionProps> = ({
                   value={opcionDj}
                   onChange={(e) => setOpcionDj(e.target.value as OpcionDiscotecaId | '')}
                 >
-                  <option value="">Selecciona una opcion</option>
-                  <option value="basico">Basico</option>
-                  <option value="estandar">Estandar</option>
+                  <option value="">Selecciona una opción</option>
+                  <option value="basico">Básico</option>
+                  <option value="estandar">Estándar</option>
                   <option value="full">Full</option>
                 </select>
               </div>

@@ -1,12 +1,9 @@
 import React from 'react'
-import { WHATSAPP_PHONE } from '../data'
-
-const DEFAULT_MSG =
-  'Hola Carlos, quiero consultar disponibilidad y presupuesto para un evento.'
+import { WHATSAPP_DEFAULT_MSG, WHATSAPP_PHONE } from '../data'
 
 const WhatsAppFab: React.FC = () => (
   <a
-    href={`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(DEFAULT_MSG)}`}
+    href={`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(WHATSAPP_DEFAULT_MSG)}`}
     target="_blank"
     rel="noopener noreferrer"
     className="whatsapp-fab"
